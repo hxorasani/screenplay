@@ -1,0 +1,75 @@
+nawaat
+	frontend
+masdar
+	hooks
+	reset
+	menu
+	profiles
+	webapp
+	softkeys
+	themes
+	sheet
+	preferences
+	translate
+	time
+	dialog
+	backstack
+	list
+	templates
+	headings
+	helpers
+	offline
+	shabakah
+	head
+	settings
+	activity
+	view
+	pager
+name     screenplay
+mutassil y
+eqonaat
+	search
+	settings
+	save
+	folder
+	folderopen
+	theme
+	help
+	done
+	edit
+	close
+	menu
+	arrowback
+	add
+	shorttext
+	deleteforever
+	morevert
+taraajim
+	en
+ishtamal
+	hooks
+	reset
+	reset.zaboon
+	webapp
+	webapp.3inch
+	webapp.13inch
+	list
+	backstack
+	preferences
+	activity
+	view
+	pager
+	time
+	settings
+	translate
+	templates
+	softkeys
+	softkeys.list
+	sheet
+	themes
+	dialog
+	webapp.touch
+	softkeys.touch
+	shabakah
+xudoo3
+sinf     zaboon
