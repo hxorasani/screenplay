@@ -1,4 +1,5 @@
 navigationlongpress navigationlongpress
+settingsuilanguage  settingsuilanguage
 softkeysautoheight  softkeysautoheight
 iconhourglassempty  iconhourglassempty
 softkeystouchdpad   softkeystouchdpad
@@ -46,15 +47,18 @@ _katabmowdoo3       _katabmowdoo3
 _replacements       _replacements
 justifycenter       justifycenter
 narrowletters       narrowletters
+parenthetical       parenthetical
 transparency        transparency
 offlinesince        offlinesince
 keyboardopen        keyboardopen
+relativedays        relativedays
 iconsettings        iconsettings
 bodyshowhtml        bodyshowhtml
 visiblesheet        visiblesheet
 dynamicstyle        dynamicstyle
 setnotifybar        setnotifybar
 jawaabwaaqat        jawaabwaaqat
+alreadytaken        alreadytaken
 iconmorevert        iconmorevert
 taxeercancel        taxeercancel
 queuerequest        queuerequest
@@ -62,6 +66,7 @@ fetchprocess        fetchprocess
 fetchtimeout        fetchtimeout
 _muntahaabox        _muntahaabox
 relativetime        relativetime
+displayblock        displayblock
 requestfeat         requestfeat
 unsupported         unsupported
 domformdata         domformdata
@@ -69,6 +74,7 @@ contextmenu         contextmenu
 templateset         templateset
 updatetheme         updatetheme
 nasharbadaa         nasharbadaa
+iconrefresh         iconrefresh
 fetchcancel         fetchcancel
 scrolltotop         scrolltotop
 uponpastend         uponpastend
@@ -96,8 +102,8 @@ themecolor          themecolor
 navigation          navigation
 shabakahui          shabakahui
 jawaabaxav          jawaabaxav
-editorlist          editorlist
 place_text          place_text
+editorlist          editorlist
 iconfolder          iconfolder
 iconsearch          iconsearch
 queuearray          queuearray
@@ -144,6 +150,8 @@ tertiaryl           tertiaryl
 tertiaryd           tertiaryd
 tertiaryt           tertiaryt
 icontheme           icontheme
+time_text           time_text
+iconquote           iconquote
 _onfinish           _onfinish
 _registry           _registry
 beforepop           beforepop
@@ -154,6 +162,7 @@ uponclick           uponclick
 uponbahac           uponbahac
 _muntahaa           _muntahaa
 ishtaghal           ishtaghal
+is_active           is_active
 monthname           monthname
 fuzzytime           fuzzytime
 direction           direction
@@ -190,6 +199,7 @@ hidetext            hidetext
 pagerzir            pagerzir
 deadline            deadline
 muxtasar            muxtasar
+datetime            datetime
 bodyi18n            bodyi18n
 timeshow            timeshow
 bodyhtml            bodyhtml
@@ -198,7 +208,6 @@ skbutton            skbutton
 minimize            minimize
 iconhelp            iconhelp
 softkeys            softkeys
-iconcopy            iconcopy
 oncancel            oncancel
 ayyihaal            ayyihaal
 primaryl            primaryl
@@ -213,8 +222,8 @@ ittasaal            ittasaal
 shabakah            shabakah
 wasaatat            wasaatat
 iconsave            iconsave
-iconedit            iconedit
 iconmenu            iconmenu
+iconedit            iconedit
 toNative            toNative
 _process            _process
 onfinish            onfinish
@@ -230,6 +239,7 @@ freeflow            freeflow
 murakkaz            murakkaz
 afterset            afterset
 namoovaj            namoovaj
+dom_keys            dom_keys
 muntaxab            muntaxab
 _minutes            _minutes
 _seconds            _seconds
@@ -246,6 +256,8 @@ semibold            semibold
 vertical            vertical
 extradim            extradim
 tawassa3            tawassa3
+morning             morning
+evening             evening
 profile             profile
 aqrabaa             aqrabaa
 quality             quality
@@ -264,6 +276,7 @@ exiting             exiting
 eqonaat             eqonaat
 taHjeem             taHjeem
 tahweem             tahweem
+dropped             dropped
 keydown             keydown
 visible             visible
 sheetui             sheetui
@@ -284,6 +297,7 @@ primary             primary
 accentl             accentl
 accentt             accentt
 accentd             accentd
+parenth             parenth
 iconadd             iconadd
 _didrun             _didrun
 _onnext             _onnext
@@ -309,6 +323,7 @@ vcenter             vcenter
 allcaps             allcaps
 skenter             skenter
 heading             heading
+notime              notime
 author              author
 openad              openad
 skhelp              skhelp
@@ -320,10 +335,10 @@ friday              friday
 dimmer              dimmer
 qaleel              qaleel
 wastah              wastah
+itlaa3              itlaa3
 huboot              huboot
 scroll              scroll
 hidden              hidden
-itlaa3              itlaa3
 baidaa              baidaa
 dialog              dialog
 future              future
@@ -346,6 +361,7 @@ lamsah              lamsah
 waaqat              waaqat
 nashar              nashar
 action              action
+delete              delete
 switch              switch
 _paths              _paths
 taxeer              taxeer
@@ -390,6 +406,7 @@ sticky              sticky
 bottom              bottom
 spaces              spaces
 inline              inline
+night               night
 build               build
 hijri               hijri
 theme               theme
@@ -499,7 +516,6 @@ axav                axav
 json                json
 xarq                xarq
 edit                edit
-load                load
 each                each
 _map                _map
 _uid                _uid
@@ -549,6 +565,7 @@ item                item
 uid                 uid
 ext                 ext
 int                 int
+day                 day
 off                 off
 ism                 ism
 age                 age
@@ -565,7 +582,6 @@ run                 run
 cnt                 cnt
 cur                 cur
 uri                 uri
-day                 day
 now                 now
 big                 big
 top                 top

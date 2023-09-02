@@ -127,16 +127,19 @@ label {
 	padding:0 2px;
 }
 	
+input, textarea, select, .input {
+	border:0;
+	padding:1px 2px;
+}
+	
 input, textarea, select {
 	background-color:transparent;
-	border:0;
 	border-radius:0;
 	font-family:inherit;
 	font-size:inherit;
 	font-weight:inherit;
 	width:100%;
 	margin:0;
-	padding:1px 2px;
 	display:block;
 	resize:none;
 }
@@ -346,6 +349,10 @@ select, select:focus {
 .inline {
 	display:inline-block;
 	vertical-align:middle;
+}
+	
+.displayblock {
+	display:block;
 }
 	
 .narrowline {
@@ -613,7 +620,6 @@ input.bare {
 	max-width:160px;
 	padding:10px 15px;
 	border-radius:20px;
-	font-weight:bold;
 }
 	
 #taht3nsar .text {
@@ -1155,7 +1161,7 @@ html, body, svg text {
 	}
 	#softkeysui .row2, #skdots {
 		display:flex;
-		flex-direction:column-reverse;
+		flex-direction:column;
 		position:fixed;
 		bottom:90px;
 		right:0;
@@ -1234,11 +1240,31 @@ html, body, svg text {
 	
 .scene input.title {
 	border-bottom:0;
+	padding:0 12px;
+}
+	
+.scene button {
+	padding:16px;
 }
 	
 .action {
 	margin:6px 10%;
 	padding:6px;
+}
+	
+.dialog {
+	margin:6px 20%;
+	padding:6px;
+}
+	
+.dialog input, .dialog textarea {
+	border-bottom:0;
+}
+	
+.dialog .name, .dialog .parenthetical {
+	width:80%;
+	margin:6px auto;
+	text-align:center;
 }
 </style>
 
@@ -1363,7 +1389,7 @@ html, body, svg text {
 					<div class=grow>
 						<b data-i18n=build></b>
 						
-						<div> 224</div>
+						<div> 425</div>
 						</div>
 					
 					<div class=grow>
@@ -1424,7 +1450,7 @@ html, body, svg text {
 		
 		<div data-view=main>
 			<p>
-				<div class="red upper bold tag pad centertext">not production ready. use at your own peril.</div>
+				<div class="red upper bold tag pad centertext">Not production ready. use at your own peril.</div>
 				</p>
 			
 			<div id=screenplayfolder class="tag pad centertext">
@@ -1437,24 +1463,29 @@ html, body, svg text {
 			</div>
 		
 		<div class="monospace editorlist" data-view=edit>
+			<p>
+				<div class="bold tag pad centertext" data-id=currently_open_file></div>
+				</p>
+			
+			<hr>
 			<div data-id=list></div>
 			</div>
 		
 		<div class="heading listitem flex scene" data-template=scene>
 			<button data-id=place_text></button>
 			
-			<input class=title data-id=text></div>
+			<input class="title upper" data-id=text data-i18n=scene>
+			<button data-id=time_text></button>
+			</div>
 		
-		<div class="action listitem action" data-template=action>
-			<div contenteditable data-id=text></div>
+		<div class="action listitem" data-template=action>
+			<div contenteditable data-id=text data-i18n=action></div>
 			</div>
 		
 		<div class="dialog listitem" data-template=dialog>
-			<div class=name data-id=name></div>
-			
-			<div class=parenthetical data-id=parenth></div>
-			
-			<div class=dialog data-id=dialog></div>
+			<input class=name data-id=name data-i18n=name>
+			<input class=parenthetical data-id=parenth data-i18n=parenthetical>
+			<textarea data-id=text data-i18n=dialog></textarea>
 			</div>
 		
 		<div class="transition right listitem" data-template=transition>
@@ -1464,7 +1495,7 @@ html, body, svg text {
 		<script src=a.js></script>
 		
 		
-<svg id="eqonaat"><defs> <path id="shorttext-a" d="M0 0h48v48H0V0z"/> </defs><symbol viewBox="0 0 48 48" id="iconadd"> <path d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconarrowback"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40v-4z"/> </symbol><symbol viewBox="0 0 48 48" id="iconclose"> <path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="icondeleteforever"> <path fill="none" d="M0 0h48v48H0V0z"/> <path d="M12 38c0 2.2 1.8 4 4 4h16c2.2 0 4-1.8 4-4V14H12v24zm4.93-14.24l2.83-2.83L24 25.17l4.24-4.24 2.83 2.83L26.83 28l4.24 4.24-2.83 2.83L24 30.83l-4.24 4.24-2.83-2.83L21.17 28l-4.24-4.24zM31 8l-2-2H19l-2 2h-7v4h28V8z"/> <path fill="none" d="M0 0h48v48H0z"/> </symbol><symbol viewBox="0 0 48 48" id="icondone"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M18 32.34L9.66 24l-2.83 2.83L18 38l24-24-2.83-2.83z"/> </symbol><symbol viewBox="0 0 48 48" id="iconedit"> <path d="M6 34.5V42h7.5l22.13-22.13-7.5-7.5L6 34.5zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconfolder"> <path d="M20 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V16c0-2.21-1.79-4-4-4H24l-4-4z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconfolderopen"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M40 12H24l-4-4H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V16c0-2.21-1.79-4-4-4zm0 24H8V16h32v20z"/> </symbol><symbol viewBox="0 0 48 48" id="iconhelp"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm2 34h-4v-4h4v4zm4.13-15.49l-1.79 1.84C26.9 25.79 26 27 26 30h-4v-1c0-2.21.9-4.21 2.34-5.66l2.49-2.52C27.55 20.1 28 19.1 28 18c0-2.21-1.79-4-4-4s-4 1.79-4 4h-4c0-4.42 3.58-8 8-8s8 3.58 8 8c0 1.76-.71 3.35-1.87 4.51z"/> </symbol><symbol viewBox="0 0 48 48" id="iconmenu"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z"/> </symbol><symbol viewBox="0 0 48 48" id="iconmorevert"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/> </symbol><symbol viewBox="0 0 48 48" id="iconsave"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M34 6H10c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4V14l-8-8zM24 38c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm6-20H10v-8h20v8z"/> </symbol><symbol viewBox="0 0 48 48" id="iconsearch"> <path d="M31 28h-1.59l-.55-.55C30.82 25.18 32 22.23 32 19c0-7.18-5.82-13-13-13S6 11.82 6 19s5.82 13 13 13c3.23 0 6.18-1.18 8.45-3.13l.55.55V31l10 9.98L40.98 38 31 28zm-12 0c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconsettings"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M38.86 25.95c.08-.64.14-1.29.14-1.95s-.06-1.31-.14-1.95l4.23-3.31c.38-.3.49-.84.24-1.28l-4-6.93c-.25-.43-.77-.61-1.22-.43l-4.98 2.01c-1.03-.79-2.16-1.46-3.38-1.97L29 4.84c-.09-.47-.5-.84-1-.84h-8c-.5 0-.91.37-.99.84l-.75 5.3c-1.22.51-2.35 1.17-3.38 1.97L9.9 10.1c-.45-.17-.97 0-1.22.43l-4 6.93c-.25.43-.14.97.24 1.28l4.22 3.31C9.06 22.69 9 23.34 9 24s.06 1.31.14 1.95l-4.22 3.31c-.38.3-.49.84-.24 1.28l4 6.93c.25.43.77.61 1.22.43l4.98-2.01c1.03.79 2.16 1.46 3.38 1.97l.75 5.3c.08.47.49.84.99.84h8c.5 0 .91-.37.99-.84l.75-5.3c1.22-.51 2.35-1.17 3.38-1.97l4.98 2.01c.45.17.97 0 1.22-.43l4-6.93c.25-.43.14-.97-.24-1.28l-4.22-3.31zM24 31c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/> </symbol><symbol viewBox="0 0 48 48" id="iconshorttext"> <clipPath id="shorttext-b"> <use xlink:href="#shorttext-a" overflow="visible"/> </clipPath> <path d="M8 18h32v4H8zm0 8h20v4H8z" clip-path="url(#shorttext-b)"/> </symbol><symbol viewBox="0 0 48 48" id="icontheme"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M40 17.37V8h-9.37L24 1.37 17.37 8H8v9.37L1.37 24 8 30.63V40h9.37L24 46.63 30.63 40H40v-9.37L46.63 24 40 17.37zM24 36c-1.79 0-3.48-.4-5-1.1 4.13-1.9 7-6.06 7-10.9s-2.87-9-7-10.9c1.52-.7 3.21-1.1 5-1.1 6.63 0 12 5.37 12 12s-5.37 12-12 12z"/> </symbol></svg>
+<svg id="eqonaat"><defs> <path id="shorttext-a" d="M0 0h48v48H0V0z"/> </defs><symbol viewBox="0 0 48 48" id="iconadd"> <path d="M38 26H26v12h-4V26H10v-4h12V10h4v12h12v4z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconarrowback"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40v-4z"/> </symbol><symbol viewBox="0 0 48 48" id="iconclose"> <path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="icondeleteforever"> <path fill="none" d="M0 0h48v48H0V0z"/> <path d="M12 38c0 2.2 1.8 4 4 4h16c2.2 0 4-1.8 4-4V14H12v24zm4.93-14.24l2.83-2.83L24 25.17l4.24-4.24 2.83 2.83L26.83 28l4.24 4.24-2.83 2.83L24 30.83l-4.24 4.24-2.83-2.83L21.17 28l-4.24-4.24zM31 8l-2-2H19l-2 2h-7v4h28V8z"/> <path fill="none" d="M0 0h48v48H0z"/> </symbol><symbol viewBox="0 0 48 48" id="icondone"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M18 32.34L9.66 24l-2.83 2.83L18 38l24-24-2.83-2.83z"/> </symbol><symbol viewBox="0 0 48 48" id="iconedit"> <path d="M6 34.5V42h7.5l22.13-22.13-7.5-7.5L6 34.5zm35.41-20.41c.78-.78.78-2.05 0-2.83l-4.67-4.67c-.78-.78-2.05-.78-2.83 0l-3.66 3.66 7.5 7.5 3.66-3.66z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconfolder"> <path d="M20 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V16c0-2.21-1.79-4-4-4H24l-4-4z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconfolderopen"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M40 12H24l-4-4H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V16c0-2.21-1.79-4-4-4zm0 24H8V16h32v20z"/> </symbol><symbol viewBox="0 0 48 48" id="iconhelp"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm2 34h-4v-4h4v4zm4.13-15.49l-1.79 1.84C26.9 25.79 26 27 26 30h-4v-1c0-2.21.9-4.21 2.34-5.66l2.49-2.52C27.55 20.1 28 19.1 28 18c0-2.21-1.79-4-4-4s-4 1.79-4 4h-4c0-4.42 3.58-8 8-8s8 3.58 8 8c0 1.76-.71 3.35-1.87 4.51z"/> </symbol><symbol viewBox="0 0 48 48" id="iconmenu"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z"/> </symbol><symbol viewBox="0 0 48 48" id="iconmorevert"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M24 16c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/> </symbol><symbol viewBox="0 0 48 48" id="iconquote"> <path d="M12 34h6l4-8V14H10v12h6zm16 0h6l4-8V14H26v12h6z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconrefresh"> <path d="M35.3 12.7C32.41 9.8 28.42 8 24 8 15.16 8 8.02 15.16 8.02 24S15.16 40 24 40c7.45 0 13.69-5.1 15.46-12H35.3c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55L26 22h14V8l-4.7 4.7z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconsave"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M34 6H10c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4V14l-8-8zM24 38c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm6-20H10v-8h20v8z"/> </symbol><symbol viewBox="0 0 48 48" id="iconsearch"> <path d="M31 28h-1.59l-.55-.55C30.82 25.18 32 22.23 32 19c0-7.18-5.82-13-13-13S6 11.82 6 19s5.82 13 13 13c3.23 0 6.18-1.18 8.45-3.13l.55.55V31l10 9.98L40.98 38 31 28zm-12 0c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/> <path d="M0 0h48v48H0z" fill="none"/> </symbol><symbol viewBox="0 0 48 48" id="iconsettings"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M38.86 25.95c.08-.64.14-1.29.14-1.95s-.06-1.31-.14-1.95l4.23-3.31c.38-.3.49-.84.24-1.28l-4-6.93c-.25-.43-.77-.61-1.22-.43l-4.98 2.01c-1.03-.79-2.16-1.46-3.38-1.97L29 4.84c-.09-.47-.5-.84-1-.84h-8c-.5 0-.91.37-.99.84l-.75 5.3c-1.22.51-2.35 1.17-3.38 1.97L9.9 10.1c-.45-.17-.97 0-1.22.43l-4 6.93c-.25.43-.14.97.24 1.28l4.22 3.31C9.06 22.69 9 23.34 9 24s.06 1.31.14 1.95l-4.22 3.31c-.38.3-.49.84-.24 1.28l4 6.93c.25.43.77.61 1.22.43l4.98-2.01c1.03.79 2.16 1.46 3.38 1.97l.75 5.3c.08.47.49.84.99.84h8c.5 0 .91-.37.99-.84l.75-5.3c1.22-.51 2.35-1.17 3.38-1.97l4.98 2.01c.45.17.97 0 1.22-.43l4-6.93c.25-.43.14-.97-.24-1.28l-4.22-3.31zM24 31c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/> </symbol><symbol viewBox="0 0 48 48" id="iconshorttext"> <clipPath id="shorttext-b"> <use xlink:href="#shorttext-a" overflow="visible"/> </clipPath> <path d="M8 18h32v4H8zm0 8h20v4H8z" clip-path="url(#shorttext-b)"/> </symbol><symbol viewBox="0 0 48 48" id="icontheme"> <path d="M0 0h48v48H0z" fill="none"/> <path d="M40 17.37V8h-9.37L24 1.37 17.37 8H8v9.37L1.37 24 8 30.63V40h9.37L24 46.63 30.63 40H40v-9.37L46.63 24 40 17.37zM24 36c-1.79 0-3.48-.4-5-1.1 4.13-1.9 7-6.06 7-10.9s-2.87-9-7-10.9c1.52-.7 3.21-1.1 5-1.1 6.63 0 12 5.37 12 12s-5.37 12-12 12z"/> </symbol></svg>
 
 
 		</body>

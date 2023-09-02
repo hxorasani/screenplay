@@ -6,11 +6,13 @@
 +include linked/webapp.13inch.js
 +include linked/list.js
 +include linked/backstack.js
++include linked/files.js
 +include linked/preferences.js
 +include linked/activity.js
 +include linked/view.js
 +include linked/pager.js
 +include linked/time.js
++include linked/helpers.js
 +include linked/settings.js
 +include linked/translate.js
 +include linked/templates.js

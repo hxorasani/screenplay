@@ -6,11 +6,13 @@
 +include linked/webapp.13inch.htm.slang
 +include linked/list.htm.slang
 +include linked/backstack.htm.slang
++include linked/files.htm.slang
 +include linked/preferences.htm.slang
 +include linked/activity.htm.slang
 +include linked/view.htm.slang
 +include linked/pager.htm.slang
 +include linked/time.htm.slang
++include linked/helpers.htm.slang
 +include linked/settings.htm.slang
 +include linked/translate.htm.slang
 +include linked/templates.htm.slang

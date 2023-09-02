@@ -632,6 +632,7 @@ $.unload = function (mods, fn) {
 
 ;(function (){
 	// TODO: move queue requests here, only the XHR parts
+	// TODO make a way to check if a fetch request is active
 	// qr is deprecated henceforth, use queue with fetch for the same effect
 	// fetch by default uses XHRs but it can also use node requests
 	$.queuerequest = function () {

@@ -4,24 +4,31 @@ body
 	[view=main]
 		p
 			.red .upper .bold .tag .pad .centertext
-				"not production ready. use at your own peril."
+				"Not production ready. use at your own peril."
 		div #screenplayfolder .tag .pad .centertext
 			p "This app will create a 'Screenplays' folder in your chosen location."
 			p "Press the folder icon in the bottom left corner."
 		[id=list]
 
 	[view=edit] .monospace .editorlist
+		p
+			.bold .tag .pad .centertext [id=currently_open_file]
+		hr
 		[id=list]
 
 	[template=scene] .heading .listitem .flex .scene
 		button [id=place_text]
-		input [id=text] .title
-	[template=action] .action .listitem .action
-		div @contenteditable [id=text]
+		input [id=text] .title .upper [i18n=scene]
+		button [id=time_text]
+
+	[template=action] .action .listitem
+		div @contenteditable [id=text] [i18n=action]
+
 	[template=dialog] .dialog .listitem
-		[id=name] .name
-		[id=parenth] .parenthetical
-		[id=dialog] .dialog
+		input [id=name] .name [i18n=name]
+		input [id=parenth] .parenthetical [i18n=parenthetical]
+		textarea [id=text] [i18n=dialog]
+
 	[template=transition] .transition .right .listitem
 		[id=text] .transition
 

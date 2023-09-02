@@ -5,6 +5,7 @@ masdar
 	reset
 	menu
 	profiles
+	files
 	webapp
 	softkeys
 	themes
@@ -30,6 +31,7 @@ mutassil y
 eqonaat
 	search
 	settings
+	refresh
 	save
 	folder
 	folderopen
@@ -41,6 +43,7 @@ eqonaat
 	menu
 	arrowback
 	add
+	quote
 	shorttext
 	deleteforever
 	morevert
@@ -55,11 +58,13 @@ ishtamal
 	webapp.13inch
 	list
 	backstack
+	files
 	preferences
 	activity
 	view
 	pager
 	time
+	helpers
 	settings
 	translate
 	templates
