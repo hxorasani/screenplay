@@ -39,6 +39,7 @@ softkeyshints       softkeyshints
 navigationend       navigationend
 shabakahajraa       shabakahajraa
 sessionchange       sessionchange
+parenthetical       parenthetical
 iconshorttext       iconshorttext
 select_folder       select_folder
 fetchchannels       fetchchannels
@@ -47,7 +48,6 @@ _katabmowdoo3       _katabmowdoo3
 _replacements       _replacements
 justifycenter       justifycenter
 narrowletters       narrowletters
-parenthetical       parenthetical
 transparency        transparency
 offlinesince        offlinesince
 keyboardopen        keyboardopen
@@ -104,6 +104,7 @@ shabakahui          shabakahui
 jawaabaxav          jawaabaxav
 place_text          place_text
 editorlist          editorlist
+iconperson          iconperson
 iconfolder          iconfolder
 iconsearch          iconsearch
 queuearray          queuearray
@@ -171,6 +172,7 @@ uponenter           uponenter
 touchdpad           touchdpad
 monospace           monospace
 extradimx           extradimx
+charname            charname
 profiles            profiles
 settings            settings
 calendar            calendar
@@ -258,6 +260,7 @@ extradim            extradim
 tawassa3            tawassa3
 morning             morning
 evening             evening
+parenth             parenth
 profile             profile
 aqrabaa             aqrabaa
 quality             quality
@@ -297,7 +300,6 @@ primary             primary
 accentl             accentl
 accentt             accentt
 accentd             accentd
-parenth             parenth
 iconadd             iconadd
 _didrun             _didrun
 _onnext             _onnext
@@ -324,6 +326,7 @@ allcaps             allcaps
 skenter             skenter
 heading             heading
 notime              notime
+dialog              dialog
 author              author
 openad              openad
 skhelp              skhelp
@@ -340,7 +343,6 @@ huboot              huboot
 scroll              scroll
 hidden              hidden
 baidaa              baidaa
-dialog              dialog
 future              future
 hourly              hourly
 yearly              yearly

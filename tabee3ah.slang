@@ -34,6 +34,7 @@ eqonaat
 	refresh
 	save
 	folder
+	person
 	folderopen
 	theme
 	help

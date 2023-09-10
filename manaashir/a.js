@@ -978,7 +978,7 @@ $.unload = function (mods, fn) {
 })();
 $._r();
 'use strict';
-var taraajim = {"en":{"ext":"EXT.","int":"INT.","notime":"...","day":"DAY","night":"NIGHT","morning":"MORNING","evening":"EVENING","pagerasmaa":"Tab Names","profile":"Profile","profiles":"Profiles","noprofiles":"No Profiles","aqrabaa":"Favorites","noaqrabaa":"No Favorites","settings":"Settings","requestfeat":"Request Feature","reportbug":"Report Bug","author":"Author","build":"Build","openad":"Ad","quality":"Quality","largetext":"Large Text","transparency":"Transparency","calendar":"Calendar","hijri":"Hijri","gregorian":"Gregorian","builton":"Built On","offlinesince":"Offline since","skhelp":"Press # for actions","softkeystouchdpad":"Touchscreen D-Pad","theme":"Theme","black":"Black","white":"White","infuture":"in","justnow":"just now","sseconds":"s","secondsago":"secs","aminuteago":"a min","minute":"min","sminutes":"m","minutes":"mins","minutesago":"mins","anhourago":"an hr","hourago":"hr","hoursago":"hrs","yesterday":"yesterday","tomorrow":"tomorrow","adayago":"a day","dayago":"d","daysago":"d","lastmonth":"last month","monthago":"mo","monthsago":"mo","lastyear":"last year","yearago":"y","yearsago":"y","alongtime":"a long time","sunday":"sunday","monday":"monday","tuesday":"tuesday","wednesday":"wednesday","thursday":"thursday","friday":"friday","saturday":"saturday",",":",","am":"am","pm":"pm","st":"st","nd":"nd","rd":"rd","th":"th","timeformat":"Time Format","hours24":"24 hour","hours12":"12 hour","language":"Language","en":"English","ar":"Arabic","ur":"Urdu","ru":"Russian","de":"German","es":"Spanish","loading":"Loading...","exiting":"Exiting...","unsupported":"Your device can't run this app","off":"Off","on":"On","animations":"Animations","webapptouchdir":"Touch affects direction"}};
+var taraajim = {"en":{"ext":"EXT.","int":"INT.","notime":"...","day":"DAY","night":"NIGHT","morning":"MORNING","evening":"EVENING","parenth":"Parenthetical","charname":"Character Name","dialog":"Dialog","pagerasmaa":"Tab Names","profile":"Profile","profiles":"Profiles","noprofiles":"No Profiles","aqrabaa":"Favorites","noaqrabaa":"No Favorites","settings":"Settings","requestfeat":"Request Feature","reportbug":"Report Bug","author":"Author","build":"Build","openad":"Ad","quality":"Quality","largetext":"Large Text","transparency":"Transparency","calendar":"Calendar","hijri":"Hijri","gregorian":"Gregorian","builton":"Built On","offlinesince":"Offline since","skhelp":"Press # for actions","softkeystouchdpad":"Touchscreen D-Pad","theme":"Theme","black":"Black","white":"White","infuture":"in","justnow":"just now","sseconds":"s","secondsago":"secs","aminuteago":"a min","minute":"min","sminutes":"m","minutes":"mins","minutesago":"mins","anhourago":"an hr","hourago":"hr","hoursago":"hrs","yesterday":"yesterday","tomorrow":"tomorrow","adayago":"a day","dayago":"d","daysago":"d","lastmonth":"last month","monthago":"mo","monthsago":"mo","lastyear":"last year","yearago":"y","yearsago":"y","alongtime":"a long time","sunday":"sunday","monday":"monday","tuesday":"tuesday","wednesday":"wednesday","thursday":"thursday","friday":"friday","saturday":"saturday",",":",","am":"am","pm":"pm","st":"st","nd":"nd","rd":"rd","th":"th","timeformat":"Time Format","hours24":"24 hour","hours12":"12 hour","language":"Language","en":"English","ar":"Arabic","ur":"Urdu","ru":"Russian","de":"German","es":"Spanish","loading":"Loading...","exiting":"Exiting...","unsupported":"Your device can't run this app","off":"Off","on":"On","animations":"Animations","webapptouchdir":"Touch affects direction"}};
 var Hooks, hooks;
 ;(function (){
 	'use strict';
@@ -3048,21 +3048,21 @@ var preferences;
 		},
 	};
 	var buildnum = preferences.get('#', 1);
-	if ( buildnum != 425 ) {
+	if ( buildnum != 482 ) {
 		preferences.pop(3); // ruid
 		preferences.pop('@'); // last sync time
 		preferences.pop(4); // list view cache
 		preferences.pop(6); // initial sync done
 	}
-	preferences.set('#', 425);
+	preferences.set('#', 482);
 	Hooks.set('ready', function () {
-		if ( buildnum != 425 ) {
+		if ( buildnum != 482 ) {
 			$.taxeer('seeghahjadeedah', function () {
 				Hooks.run('seeghahjadeedah', buildnum);
 			}, 2000);
 		}
 	});
-	$.log.s( 425 );
+	$.log.s( 482 );
 })();
 var activity;
 ;(function(){
@@ -4251,10 +4251,10 @@ var settings, currentad;
 			});
 		}],*/
 		['reportbug', 0, function () {
-			activity.abrad(myemail+'?subject='+appname+' bug '+425);
+			activity.abrad(myemail+'?subject='+appname+' bug '+482);
 		}],
 		['requestfeat', 0, function () {
-			activity.abrad(myemail+'?subject='+appname+' request '+425);
+			activity.abrad(myemail+'?subject='+appname+' request '+482);
 		}],
 		['timeformat', function () {
 			var is24 = preferences.get(24, 1);
@@ -4758,6 +4758,7 @@ var templates, namaavij;
 /* FEATURES
 <element>.on_focus_prev() triggered when K.up is pressed on an element
 <element>.on_focus_next() triggered when K.dn is pressed on an element
+all keyups are pd'd, fig out logic for keydowns in .press
 */
 var softkeys, K, P;
 ;(function(){
@@ -5008,8 +5009,12 @@ var softkeys, K, P;
 				k = K.sr, pd();
 			if (k == K.mt) pd();
 			var editmode = 0, a = document.activeElement, dir;
+			var left_key = K.lf,
+				right_key = K.rt;
 			if ((a instanceof HTMLTextAreaElement) || a.contentEditable == 'true') {
-				if (e && e.altKey || [K.sl, K.sr].includes(k)) {} else caught = 1;
+				if (e && e.altKey || [K.sl, K.sr].includes(k)) {
+				} else {
+				}
 			}
 			if ((a instanceof HTMLInputElement || a instanceof HTMLTextAreaElement || a.contentEditable == 'true')
 			&& a.type != 'range') {
@@ -5029,12 +5034,23 @@ var softkeys, K, P;
 					if (parent) parent.remove();
 					pd();
 				}
-				if ( isfun(a.on_focus_prev) && k == K.up ) { caught = 1; pd(); a.on_focus_prev(); return; }
-				if ( isfun(a.on_focus_next) && k == K.dn ) { caught = 1; pd(); a.on_focus_next(); return; }
+				if ( isfun(a.on_focus_prev) && (k == K.up || k == left_key) ) {
+					caught = 1;
+					pd();
+					a.on_focus_prev();
+					return;
+				}
+				if ( isfun(a.on_focus_next) && (k == K.dn || k == right_key) ) {
+					caught = 1;
+					pd();
+					a.on_focus_next();
+					return;
+				}
 			}
 			var length = 0, selectionStart = 0;
 			/* TODO test left/right keys on buttons and single line inputs
 			* always allow using up/down keys to move between fields
+			* left/right should detect language direction
 			* */
 			if (editmode) {
 				if (a.contentEditable == 'true') {
@@ -5046,11 +5062,11 @@ var softkeys, K, P;
 				}
 				var atend = (length === selectionStart),
 					atstart = (0 === selectionStart);
-				if ( atstart && (k == K.up) && !e.altKey ) { // MERGE ?
+				if ( atstart && (k == K.up || k == left_key) && !e.altKey ) { // MERGE ?
 					if ( isfun(a.on_focus_prev) ) { caught = 1; pd(); a.on_focus_prev(); return; }
 					caught = focusprev(a), pd();
 				}
-				if ( atend && (k == K.dn) && !e.altKey ) { // MERGE ?
+				if ( atend && (k == K.dn || k == right_key) && !e.altKey ) { // MERGE ?
 					if ( isfun(a.on_focus_next) ) { caught = 1; pd(); a.on_focus_next(); return; }
 					caught = focusnext(a), pd();
 				}
@@ -5061,8 +5077,8 @@ var softkeys, K, P;
 			else if (a) {
 				if ( is_navigable( a )
 					|| a.parentElement.dataset.focus ) {
-					if (k == K.up) caught = focusprev(a), pd();
-					if (k == K.dn) caught = focusnext(a), pd();
+					if (k == K.up || k == left_key) caught = focusprev(a), pd();
+					if (k == K.dn || k == right_key) caught = focusnext(a), pd();
 					if (k == K.en && a.onclick) a.onclick(), pd();
 				}
 			}
@@ -5141,6 +5157,7 @@ var softkeys, K, P;
 	Hooks.set('contextmenu', function (e) {
 		var a = document.activeElement;
 		if (a && (a instanceof HTMLInputElement
+		|| a.contentEditable == 'true'
 		|| a instanceof HTMLTextAreaElement) && a.type != 'range') {
 		} else {
 			softkeys.showhints();
@@ -6031,7 +6048,7 @@ var shabakah, sessions = sessions || 0;
 		payload = payload || {};
 		payload = Object.assign(payload, {
 			nashar: 1 , // mutawaaqit min qabl (synced before)
-			e$ : 425 , // insha 3adad
+			e$ : 482 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		xataalog(payload);
@@ -6076,7 +6093,7 @@ var shabakah, sessions = sessions || 0;
 		if (Object.keys(mu3allaq).length === 0) return;
 		payload = payload || {};
 		payload = Object.assign(payload, {
-			e$ : 425 , // insha 3adad
+			e$ : 482 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		payload.axav = payload.axav || {};
@@ -6134,7 +6151,7 @@ var shabakah, sessions = sessions || 0;
 		if (Object.keys(mutawaaqit).length === 0) return;
 		payload = payload || {};
 		payload = Object.assign(payload, {
-			e$ : 425 , // insha 3adad
+			e$ : 482 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		payload.waaqat = payload.waaqat || {};
@@ -6165,7 +6182,7 @@ var shabakah, sessions = sessions || 0;
 	var rafa3 = function (ism, haajah, qadr, marfoo3, wasaatat) {
 		var payload = {};
 		payload = Object.assign(payload, {
-			e$ : 425 , // insha 3adad
+			e$ : 482 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		payload.rafa3 = {};
@@ -6310,22 +6327,50 @@ var editorlist, editor, currently_open_file;
 ;(function(){
 	var mfateeh;
 	editor = {
+		get_time: function (time) {
+			var time_text = 'notime';
+				if (time == 1) time_text = 'day' ;
+			else if (time == 2) time_text = 'night' ;
+			else if (time == 3) time_text = 'morning' ;
+			else if (time == 4) time_text = 'evening' ;
+			return time_text;
+		},
+		get_place: function (place) {
+			return place ? 'ext' : 'int';
+		},
 		replace_with: function () {
-			$.log( 'replace_with' );
 			var cur = editorlist.get_item_element();
 			if (cur) {
 				var uid = getdata( cur , 'uid' );
 				var o = editorlist.adapter.get( uid );
 				var setter, replacement;
+				var keys = editorlist.get_item_keys( uid );
 				if (o.type === 0) { // Scene
 					replacement = 'action';
 					o.type = 1;
+					o.place = keys.place_text.value;
+					o.time = keys.time_text.value;
+					o.text = keys.text.value;
 				} else if (o.type === 1) { // Action
-					replacement = 'dialog';
+					replacement = 'charname';
 					o.type = 2;
-				} else if (o.type === 2) { // Dialog
+					o.text = keys.text.textContent;
+				} else if (o.type === 2) { // Character Name
+					replacement = 'dialog';
+					o.type = 3;
+					o.text = keys.text.value;
+				} else if (o.type === 3) { // Dialog
+					replacement = 'parenthetical';
+					o.type = 4;
+					o.text = keys.text.textContent;
+				} else if (o.type === 4) { // Parenthetical
 					replacement = 'scene';
 					o.type = 0;
+					o.text = keys.text.value;
+					o.place = o.place || 0;
+					o.place_text$t = editor.get_place( o.place );
+					o.time = o.time || 0;
+					o.time_text$t = editor.get_time( o.time );
 				}
 				setter = templates.replace_with(cur, replacement);
 				if (setter) {
@@ -6333,7 +6378,12 @@ var editorlist, editor, currently_open_file;
 					setdata( clone, 'listitem', 1 );
 					setdata( clone, 'uid', o.uid );
 					clone.id = o.id_dom;
-					$.log( clone );
+					keys = editorlist.get_item_keys( uid );
+					keys.text.focus();
+					editorlist.after_set(o, clone, keys);
+					if ([1, 2, 3, 4].includes(o.type)) {
+						softkeys.autoheight( keys.text );
+					}
 				}
 			}
 		},
@@ -6364,11 +6414,8 @@ var editorlist, editor, currently_open_file;
 				if (o.type === 0) { // Scene
 					k.place_text.focus();
 				}
-				if (o.type === 1) { // Action
+				if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
 					k.text.focus();
-				}
-				if (o.type === 2) { // Dialog
-					k.name.focus();
 				}
 			}
 			editorlist.down();
@@ -6380,14 +6427,14 @@ var editorlist, editor, currently_open_file;
 					var e = c[i];
 					var k = templates.keys(e);
 					var o = editorlist.adapter.get( getdata(e, 'uid') );
-					if (o.type == 0) {
-						save_array.push( [0, o.place, k.text.value, o.time] );
+					if (o.type === 0) {
+						save_array.push( [o.type, o.place, k.text.value, o.time] );
 					}
-					if (o.type == 1) { // Action
-						save_array.push( [1, k.text.textContent] );
-					}
-					if (o.type == 2) { // Dialog
-						save_array.push( [2, k.name.value, k.parenth.value, k.text.textContent] );
+					if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
+						var text = k.text.textContent;
+						if (k.text instanceof HTMLInputElement || k.text instanceof HTMLTextAreaElement)
+							text = k.text.value;
+						save_array.push( [o.type, text] );
 					}
 				}
 			}
@@ -6407,13 +6454,8 @@ var editorlist, editor, currently_open_file;
 						options.text = o[2];
 						if (o[3]) options.time = o[3];
 					}
-					if (type == 1) { // Action
+					if ([1, 2, 3, 4].includes(type)) { // Action, Character Name, Dialog, Parenthetical
 						options.text = o[1];
-					}
-					if (type == 2) { // Dialog
-						options.name = o[1];
-						options.parenth = o[2];
-						options.text = o[3];
 					}
 					editor.add(type, options);
 				}
@@ -6429,23 +6471,25 @@ var editorlist, editor, currently_open_file;
 			if (o.type === 0) {
 				o.text = 'Scene';
 				o.place = options.place || 0;
-				o.place_text$t = options.place ? 'ext' : 'int';
+				o.place_text$t = editor.get_place( options.place );
 				o.time = options.time || 0;
-				o.time_text$t = 'notime';
-				if (options.time == 1) o.time_text$t = 'day';
-				if (options.time == 2) o.time_text$t = 'night';
-				if (options.time == 3) o.time_text$t = 'morning';
-				if (options.time == 4) o.time_text$t = 'evening';
+				o.time_text$t = editor.get_time( options.time );
 			}
 			if (o.type === 1) {
 				o.text = 'Action';
 				o._listitem = 'action';
 			}
 			if (o.type === 2) {
+				o.text = 'Character Name';
+				o._listitem = 'charname';
+			}
+			if (o.type === 3) {
 				o.text = 'Dialog';
-				o.name = options.name || '';
-				o.parenth = options.parenth || '';
 				o._listitem = 'dialog';
+			}
+			if (o.type === 4) {
+				o.text = 'Parenthetical';
+				o._listitem = 'parenthetical';
 			}
 			if (options.text) {
 				o.text = options.text;
@@ -6453,7 +6497,7 @@ var editorlist, editor, currently_open_file;
 				o.text += ' '+editorlist.length();
 			}
 			editorlist.set(o);
-			if (o.type === 2) {
+			if ([1, 2, 3, 4].includes(o.type)) {
 				var k = editorlist.get_item_keys( o.uid );
 				softkeys.autoheight( k.text );
 			}
@@ -6498,20 +6542,18 @@ var editorlist, editor, currently_open_file;
 					xlate.update();
 				};
 			}
-			if (o.type === 1) { // Action
+			if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
 				k.text.on_focus_prev = editor.prev;
-				k.text.on_focus_next = editor.next;
-			}
-			if (o.type === 2) { // Dialog
-				k.name.on_focus_prev = editor.prev;
 				k.text.on_focus_next = editor.next;
 			}
 		};
 	});
 	Hooks.set('softkey', function (args) {
-		if (args[0] == 'tab' && args[1].type == 'keydown' && view.is_active('edit')) {
-			editor.replace_with();
-			return 1;
+		if (view.is_active('edit') && args[0] == 'tab') {
+			preventdefault(args[1]);
+			if (args[1].type == 'keydown') {
+				editor.replace_with();
+			}
 		}
 	});
 	Hooks.set('viewready', function (args) { if (args.name == 'edit') {
@@ -6536,7 +6578,10 @@ var editorlist, editor, currently_open_file;
 		}, '1', 'iconsave', 0);
 		softkeys.set('2', function () {
 			editor.add(2);
-		}, '2', 'iconquote', 0);
+		}, '2', 'iconperson', 0);
+		softkeys.set('3', function () {
+			editor.add(3);
+		}, '3', 'iconquote', 0);
 		softkeys.set('1', function () {
 			editor.add(1);
 		}, '1', 'iconshorttext', 0);
@@ -6710,6 +6755,10 @@ var screenplaylist, main;
 				});
 			}
 		});
+		$.taxeer('switch', function () {
+			Hooks.run('view', 'edit');
+			main.read_file( rootpath+'/Dark.screenplay' );
+		}, 100);
 	});
 	Hooks.set('viewready', function (args) { if (args.name == 'main') {
 		pager.intaxab('main', 1);

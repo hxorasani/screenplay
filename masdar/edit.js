@@ -7,23 +7,64 @@ var editorlist, editor, currently_open_file;
 	var mfateeh;
 	
 	editor = {
+		get_time: function (time) {
+			var time_text = 'XPO.notime';
+
+				 if (time == 1) time_text = 'XPO.day'		;
+			else if (time == 2) time_text = 'XPO.night'		;
+			else if (time == 3) time_text = 'XPO.morning'	;
+			else if (time == 4) time_text = 'XPO.evening'	;
+
+			return time_text;
+		},
+		get_place: function (place) {
+			return place ? 'XPO.ext' : 'XPO.int';
+		},
 		replace_with: function () {
-			$.log( 'replace_with' );
 			var cur = editorlist.get_item_element();
 			if (cur) {
 				var uid = getdata( cur , 'XPO.uid' );
 				var o = editorlist.adapter.get( uid );
 				var setter, replacement;
+				var keys = editorlist.get_item_keys( uid );
 
 				if (o.type === 0) { // Scene
 					replacement = 'XPO.action';
 					o.type = 1;
+
+					o.place = keys.XPO.place_text.value;
+					o.time = keys.XPO.time_text.value;
+					o.text = keys.XPO.text.value;
+
 				} else if (o.type === 1) { // Action
-					replacement = 'XPO.dialog';
+					replacement = 'XPO.charname';
 					o.type = 2;
-				} else if (o.type === 2) { // Dialog
+
+					o.text = keys.XPO.text.textContent;
+
+				} else if (o.type === 2) { // Character Name
+					replacement = 'XPO.dialog';
+					o.type = 3;
+
+					o.text = keys.XPO.text.value;
+
+				} else if (o.type === 3) { // Dialog
+					replacement = 'XPO.parenthetical';
+					o.type = 4;
+
+					o.text = keys.XPO.text.textContent;
+
+				} else if (o.type === 4) { // Parenthetical
 					replacement = 'XPO.scene';
 					o.type = 0;
+
+					o.text = keys.XPO.text.value;
+
+					o.place = o.place || 0;
+					o.place_text$t = editor.get_place( o.place );
+					
+					o.time = o.time || 0;
+					o.time_text$t = editor.get_time( o.time );
 				}
 				
 				setter = templates.replace_with(cur, replacement);
@@ -33,7 +74,14 @@ var editorlist, editor, currently_open_file;
 					setdata( clone, 'XPO.listitem', 1 );
 					setdata( clone, 'XPO.uid', o.uid );
 					clone.id = o.id_dom;
-					$.log( clone );
+					keys = editorlist.get_item_keys( uid );
+					keys.XPO.text.focus();
+					editorlist.after_set(o, clone, keys);
+
+			
+					if ([1, 2, 3, 4].includes(o.type)) {
+						softkeys.autoheight( keys.XPO.text );
+					}
 				}
 			}
 		},
@@ -64,11 +112,8 @@ var editorlist, editor, currently_open_file;
 				if (o.type === 0) { // Scene
 					k.XPO.place_text.focus();
 				}
-				if (o.type === 1) { // Action
+				if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
 					k.XPO.text.focus();
-				}
-				if (o.type === 2) { // Dialog
-					k.XPO.name.focus();
 				}
 			}
 			editorlist.down();
@@ -80,14 +125,15 @@ var editorlist, editor, currently_open_file;
 					var e = c[i];
 					var k = templates.keys(e);
 					var o = editorlist.adapter.get( getdata(e, 'XPO.uid') );
-					if (o.type == 0) {
-						save_array.push( [0, o.place, k.XPO.text.value, o.time] );
+					if (o.type === 0) {
+						save_array.push( [o.type, o.place, k.XPO.text.value, o.time] );
 					}
-					if (o.type == 1) { // Action
-						save_array.push( [1, k.XPO.text.textContent] );
-					}
-					if (o.type == 2) { // Dialog
-						save_array.push( [2, k.XPO.name.value, k.XPO.parenth.value, k.XPO.text.textContent] );
+					if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
+						var text = k.XPO.text.textContent;
+						if (k.XPO.text instanceof HTMLInputElement || k.XPO.text instanceof HTMLTextAreaElement)
+							text = k.XPO.text.value;
+
+						save_array.push( [o.type, text] );
 					}
 				}
 			}
@@ -109,13 +155,8 @@ var editorlist, editor, currently_open_file;
 						options.text = o[2];
 						if (o[3]) options.time = o[3];
 					}
-					if (type == 1) { // Action
+					if ([1, 2, 3, 4].includes(type)) { // Action, Character Name, Dialog, Parenthetical
 						options.text = o[1];
-					}
-					if (type == 2) { // Dialog
-						options.name = o[1];
-						options.parenth = o[2];
-						options.text = o[3];
 					}
 					editor.add(type, options);
 				}
@@ -131,24 +172,28 @@ var editorlist, editor, currently_open_file;
 			
 			if (o.type === 0) {
 				o.text = 'Scene';
+
 				o.place = options.place || 0;
-				o.place_text$t = options.place ? 'XPO.ext' : 'XPO.int';
+				o.place_text$t = editor.get_place( options.place );
+
 				o.time = options.time || 0;
-				o.time_text$t = 'XPO.notime';
-				if (options.time == 1) o.time_text$t = 'XPO.day';
-				if (options.time == 2) o.time_text$t = 'XPO.night';
-				if (options.time == 3) o.time_text$t = 'XPO.morning';
-				if (options.time == 4) o.time_text$t = 'XPO.evening';
+				o.time_text$t = editor.get_time( options.time );
 			}
 			if (o.type === 1) {
 				o.text = 'Action';
 				o._listitem = 'XPO.action';
 			}
 			if (o.type === 2) {
+				o.text = 'Character Name';
+				o._listitem = 'XPO.charname';
+			}
+			if (o.type === 3) {
 				o.text = 'Dialog';
-				o.name = options.name || '';
-				o.parenth = options.parenth || '';
 				o._listitem = 'XPO.dialog';
+			}
+			if (o.type === 4) {
+				o.text = 'Parenthetical';
+				o._listitem = 'XPO.parenthetical';
 			}
 			
 			if (options.text) {
@@ -159,9 +204,9 @@ var editorlist, editor, currently_open_file;
 			
 			editorlist.set(o);
 			
-			if (o.type === 2) {
+			if ([1, 2, 3, 4].includes(o.type)) {
 				var k = editorlist.get_item_keys( o.uid );
-				softkeys.autoheight( k.text );
+				softkeys.autoheight( k.XPO.text );
 			}
 
 			editorlist.select();
@@ -211,21 +256,20 @@ var editorlist, editor, currently_open_file;
 					xlate.update();
 				};
 			}
-			if (o.type === 1) { // Action
+			if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
 				k.XPO.text.on_focus_prev = editor.prev;
-				k.XPO.text.on_focus_next = editor.next;
-			}
-			if (o.type === 2) { // Dialog
-				k.XPO.name.on_focus_prev = editor.prev;
 				k.XPO.text.on_focus_next = editor.next;
 			}
 		};
 		
 	});
 	Hooks.set('XPO.softkey', function (args) {
-		if (args[0] == 'tab' && args[1].type == 'keydown' && view.is_active('XPO.edit')) {
-			editor.replace_with();
-			return 1;
+		if (view.is_active('XPO.edit') && args[0] == 'tab') {
+			preventdefault(args[1]);
+
+			if (args[1].type == 'keydown') {
+				editor.replace_with();
+			}
 		}
 	});
 	Hooks.set('XPO.viewready', function (args) { if (args.XPO.name == 'XPO.edit') {
@@ -251,7 +295,10 @@ var editorlist, editor, currently_open_file;
 		}, '1', 'XPO.iconsave', 0);
 		softkeys.set('2', function () {
 			editor.add(2);
-		}, '2', 'XPO.iconquote', 0);
+		}, '2', 'XPO.iconperson', 0);
+		softkeys.set('3', function () {
+			editor.add(3);
+		}, '3', 'XPO.iconquote', 0);
 		softkeys.set('1', function () {
 			editor.add(1);
 		}, '1', 'XPO.iconshorttext', 0);

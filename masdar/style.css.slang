@@ -1,6 +1,6 @@
 +include managed.css.slang
 
-.editorlist .listitem
+.editorlist .action, .editorlist .dialog, .editorlist .charname
 	border-bottom	0 !important
 	border-left		1px dashed
 
@@ -13,19 +13,22 @@
 .scene button
 	padding			16px
 
-.action
-	margin			6px 10%
+.action, .charname
+	margin			6px 5%
 	padding			6px
 
 .dialog
 	margin			6px 20%
 	padding			6px
 
-.dialog input, .dialog textarea
+.dialog .icon, .action .icon, .charname .icon
+	left			-40px
+
+.dialog input, .dialog textarea, .charname textarea
 	border-bottom	0
 
-.dialog .name, .dialog .parenthetical
-	width			80%
+.editorlist .charname, .editorlist .parenthetical
+	width			60%
 	margin			6px auto
 	text-align		center
 

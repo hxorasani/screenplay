@@ -183,10 +183,10 @@ var screenplaylist, main;
 				});
 			}
 		});
-//		$.taxeer('XPO.switch', function () {
-//			Hooks.run('XPO.view', 'XPO.edit');
-//			main.read_file( rootpath+'/Dark.screenplay' );
-//		}, 100);
+		$.taxeer('XPO.switch', function () {
+			Hooks.run('XPO.view', 'XPO.edit');
+			main.read_file( rootpath+'/Dark.screenplay' );
+		}, 100);
 	});
 
 	Hooks.set('XPO.viewready', function (args) { if (args.XPO.name == 'XPO.main') {

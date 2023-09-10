@@ -24,10 +24,18 @@ body
 	[template=action] .action .listitem
 		div @contenteditable [id=text] [i18n=action]
 
+	[template=charname] .charname .listitem
+		[icon=iconperson] .icon .dim .absolute
+		textarea [id=text] [i18n=charname] .centertext
+
 	[template=dialog] .dialog .listitem
-		input [id=name] .name [i18n=name]
-		input [id=parenth] .parenthetical [i18n=parenthetical]
+		[icon=iconquote] .icon .dim .absolute
 		textarea [id=text] [i18n=dialog]
+
+	[template=parenthetical] .parenthetical .listitem .flex
+		span '('
+		textarea [id=text] [i18n=parenthetical] .centertext
+		span ')'
 
 	[template=transition] .transition .right .listitem
 		[id=text] .transition
