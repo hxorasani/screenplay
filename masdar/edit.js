@@ -82,6 +82,8 @@ var editorlist, editor, currently_open_file;
 					if ([1, 2, 3, 4].includes(o.type)) {
 						softkeys.autoheight( keys.XPO.text );
 					}
+					
+					select_content( keys.XPO.text );
 				}
 			}
 		},
@@ -94,10 +96,7 @@ var editorlist, editor, currently_open_file;
 				if (o.type === 0) { // Scene
 					k.XPO.time_text.focus();
 				}
-				if (o.type === 1) { // Action
-					k.XPO.text.focus();
-				}
-				if (o.type === 2) { // Dialog
+				if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
 					k.XPO.text.focus();
 				}
 			}
@@ -158,12 +157,12 @@ var editorlist, editor, currently_open_file;
 					if ([1, 2, 3, 4].includes(type)) { // Action, Character Name, Dialog, Parenthetical
 						options.text = o[1];
 					}
-					editor.add(type, options);
+					editor.add(type, options, 1);
 				}
 			});
 			editor.focus_first_element();
 		} },
-		add: function (type, options) {
+		add: function (type, options, dont_select) {
 			options = options || {};
 			var o = {
 				type: type || 0,
@@ -204,15 +203,44 @@ var editorlist, editor, currently_open_file;
 			
 			editorlist.set(o);
 			
-			if ([1, 2, 3, 4].includes(o.type)) {
-				var k = editorlist.get_item_keys( o.uid );
-				softkeys.autoheight( k.XPO.text );
-			}
+			var k = editorlist.get_item_keys( o.uid );
+
+			if (!dont_select) select_content( k.XPO.text );
 
 			editorlist.select();
 			editorlist.down();
 			editor.focus_first_element();
 			xlate.update();
+
+			if ([1, 2, 3, 4].includes(o.type)) {
+				$.taxeer(o.uid, function () {
+					softkeys.autoheight( k.XPO.text );
+				}, 3);
+			}
+		},
+		contextual_add: function () {
+			/* LOGIC
+			if standing on Scene, Action, adds Action
+			Parenthetical, Charname adds Dialog
+			*/
+			var future_type = 0;
+			var cur = editorlist.get_item_element();
+			if (cur) {
+				var uid = getdata( cur , 'XPO.uid' );
+				var o = editorlist.adapter.get( uid );
+
+				if ([0, 1].includes(o.type)) { // Scene, Action
+					future_type = 1; // Action
+				}
+				if ([2, 4].includes(o.type)) { // Charname, Parenthetical
+					future_type = 3; // Dialog
+				}
+				if ([3].includes(o.type)) { // Dialog
+					future_type = 1; // Action
+				}
+				// Transition adds Scene
+			}
+			editor.add( future_type );
 		},
 		focus_first_element: function () {
 			$.taxeer('XPO.ffe', function () {
@@ -226,7 +254,7 @@ var editorlist, editor, currently_open_file;
 		
 		editorlist = list( mfateeh.XPO.list )
 						.idprefix( 'XPO.editorlist' )
-						.listitem('XPO.scene')
+						.listitem( 'XPO.scene' )
 //						.scroll_on_focus(0)
 					;
 		editorlist.uponpaststart = editorlist.uponpastend = function () {
@@ -234,7 +262,8 @@ var editorlist, editor, currently_open_file;
 		};
 		editorlist.after_set = function (o, c, k) {
 			k.XPO.text.uponenter = function (atstart, atend) {
-				if (atend) editor.add();
+				if (atend)
+					editor.contextual_add();
 			};
 			if (o.type === 0) { // Scene
 				k.XPO.place_text.on_focus_prev = editor.prev;
@@ -279,32 +308,88 @@ var editorlist, editor, currently_open_file;
 		pager.intaxab('XPO.edit', 1);
 		webapp.header();
 
-		softkeys.set('9', function (k, e) {
-			editor.replace_with();
-		}, '9', 'XPO.iconrefresh', 0);
-		softkeys.set('delete', function (k, e) {
-			if (e.altKey || e.type != 'keydown') {
+		softkeys.add({ n: 'Move Up',
+			k: K.up,
+			alt: 1,
+			hidden: 0,
+			i: 'XPO.iconarrowupward',
+			c: function () {
+				editorlist.moveup();
+				editor.focus_first_element();
+			},
+		});
+		softkeys.add({ n: 'Move Down',
+			hidden: 0,
+			k: K.dn,
+			alt: 1,
+			i: 'XPO.iconarrowdownward',
+			c: function () {
+				editorlist.movedown();
+				editor.focus_first_element();
+			},
+		});
+		softkeys.add({ n: 'Next Format',
+			k: '9',
+			alt: 1,
+			i: 'XPO.iconrefresh',
+			c: function () {
+				editor.replace_with();
+			},
+		});
+		softkeys.add({ n: 'Save',
+			k: 's',
+			i: 'XPO.iconsave',
+			ctrl: 1,
+			c: function () {
+				editor.save();
+			},
+		});
+		softkeys.add({ n: 'Delete',
+			k: 'delete',
+			i: 'XPO.icondeleteforever',
+			alt: 1,
+			c: function () {
 				editorlist.pop();
 				editor.focus_first_element();
-			}
-			else return 0; // cancel anim [waiting for SK modifier support]
-		}, 'd', 'XPO.icondeleteforever', 0);
-		softkeys.set(['0', 's'], function (k, e) {
-			if (e.altKey || e.type != 'keydown') editor.save();
-			else return 0; // cancel anim [waiting for SK modifier support]
-		}, '1', 'XPO.iconsave', 0);
-		softkeys.set('2', function () {
-			editor.add(2);
-		}, '2', 'XPO.iconperson', 0);
-		softkeys.set('3', function () {
-			editor.add(3);
-		}, '3', 'XPO.iconquote', 0);
-		softkeys.set('1', function () {
-			editor.add(1);
-		}, '1', 'XPO.iconshorttext', 0);
-		softkeys.set(K.sl, function () {
-			editor.add(0);
-		}, 0, 'XPO.iconadd', 0);
+			},
+		});
+		softkeys.add({ n: 'Add',
+			k: K.sl,
+			i: 'XPO.iconadd',
+			c: function () {
+				editor.contextual_add();
+			},
+		});
+		// BUG fix this hitting the buttons in scene
+		/*softkeys.add({ n: 'Add',
+			k: K.en,
+			ctrl: 1,
+			i: 'XPO.iconadd',
+			c: function () {
+				editor.contextual_add();
+			},
+		});*/
+		softkeys.add({ n: 'Character',
+			k: '2',
+			i: 'XPO.iconperson',
+			c: function () {
+				editor.add(2);
+			},
+		});
+		softkeys.add({ n: 'Dialog',
+			k: '3',
+			i: 'XPO.iconquote',
+			c: function () {
+				editor.add(3);
+			},
+		});
+		softkeys.add({ n: 'Action',
+			k: '1',
+			i: 'XPO.iconshorttext',
+			c: function () {
+				editor.add(1);
+			},
+		});
 	} });
 
 })();

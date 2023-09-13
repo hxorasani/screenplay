@@ -83,7 +83,7 @@ var screenplaylist, main;
 			} else {
 				backstack.dialog({
 					c: function (name) {
-						name = helpers.alias(name || '', 96);
+						name = helpers.alias(name || '', 96, 1, 1);
 						Files.set.folder(rootpath);
 						if (name.length) {
 							name += '.screenplay';
@@ -183,10 +183,10 @@ var screenplaylist, main;
 				});
 			}
 		});
-		$.taxeer('XPO.switch', function () {
+		/*$.taxeer('XPO.switch', function () {
 			Hooks.run('XPO.view', 'XPO.edit');
 			main.read_file( rootpath+'/Dark.screenplay' );
-		}, 100);
+		}, 100);*/
 	});
 
 	Hooks.set('XPO.viewready', function (args) { if (args.XPO.name == 'XPO.main') {
@@ -204,6 +204,7 @@ var screenplaylist, main;
 			main.create();
 		}, 0, 'XPO.iconadd', 0);
 		//main.is_folder_selected();
+
 		screenplaylist.select();
 	} });
 
@@ -223,6 +224,7 @@ var screenplaylist, main;
 	});
 	Hooks.set('XPO.restore', function (args) {
 		webapp.header();
+		screenplaylist.rakkaz(1, 1);
 	});
 
 })();

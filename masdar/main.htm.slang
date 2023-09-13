@@ -15,8 +15,11 @@ body
 			.bold .tag .pad .centertext [id=currently_open_file]
 		hr
 		[id=list]
+		.scroll_break
 
-	[template=scene] .heading .listitem .flex .scene
+	[template=screenplay] .screenplay .listitem .flex
+
+	[template=scene] .listitem .flex .scene
 		button [id=place_text]
 		input [id=text] .title .upper [i18n=scene]
 		button [id=time_text]

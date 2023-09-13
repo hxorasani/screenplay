@@ -6,7 +6,11 @@ Screen writing app, tiny+fast+offline
 the most user-friendly way would be to just allow drag and drop to open ``.screenplay`` files
 
 # TODO (Planned Features)
-* **Global character mapping**: so that you can rename characters across your screenplay  
-in a single go
-* **Dialog colors**: based on characters
-* **Undo/Redo**: support for modification history
+* **Global character mapping**:
+	* so that you can rename characters across your screenplay in a single go
+* **Dialog colors**:
+	* based on characters
+* **Undo/Redo**:
+	* support for modification history
+* **Editor**:  
+	* scene heading should get pinned at the top while scrolling, explore List API's header feature

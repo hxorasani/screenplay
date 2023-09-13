@@ -3,6 +3,7 @@ settingsuilanguage  settingsuilanguage
 softkeysautoheight  softkeysautoheight
 iconhourglassempty  iconhourglassempty
 softkeystouchdpad   softkeystouchdpad
+iconarrowdownward   iconarrowdownward
 icondeleteforever   icondeleteforever
 statusbarpadding    statusbarpadding
 keydownlongpress    keydownlongpress
@@ -15,6 +16,7 @@ seeghahjadeedah     seeghahjadeedah
 translateupdate     translateupdate
 navigationstart     navigationstart
 navigationpress     navigationpress
+iconarrowupward     iconarrowupward
 realdatereplace     realdatereplace
 narrowerletters     narrowerletters
 webapptouchdir      webapptouchdir
@@ -50,6 +52,7 @@ justifycenter       justifycenter
 narrowletters       narrowletters
 transparency        transparency
 offlinesince        offlinesince
+webappresize        webappresize
 keyboardopen        keyboardopen
 relativedays        relativedays
 iconsettings        iconsettings
@@ -122,7 +125,6 @@ centertext          centertext
 inlineonly          inlineonly
 narrowline          narrowline
 inlineflex          inlineflex
-fullscreen          fullscreen
 noaqrabaa           noaqrabaa
 reportbug           reportbug
 largetext           largetext
@@ -277,7 +279,6 @@ hours12             hours12
 loading             loading
 exiting             exiting
 eqonaat             eqonaat
-taHjeem             taHjeem
 tahweem             tahweem
 dropped             dropped
 keydown             keydown
@@ -490,7 +491,6 @@ sure                sure
 icon                icon
 aqil                aqil
 wast                wast
-tvfs                tvfs
 main                main
 exit                exit
 back                back

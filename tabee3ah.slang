@@ -35,6 +35,8 @@ eqonaat
 	save
 	folder
 	person
+	arrowupward
+	arrowdownward
 	folderopen
 	theme
 	help
@@ -79,3 +81,5 @@ ishtamal
 	shabakah
 xudoo3
 sinf     zaboon
+width	800px
+height	900px

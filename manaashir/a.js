@@ -127,6 +127,11 @@ return 'html, body {'
 +'\n	background:'+o.primaryt+';'
 +'\n	border-color:'+o.secondaryt+';'
 +'\n}'
++'\n@media (min-width:320px) {'
++'\n	#softkeysui .row2 button label {'
++'\n		background:'+o.secondaryd+';'
++'\n	}'
++'\n}'
 +'\n@media (min-width:640px) {'
 +'\n	::-webkit-scrollbar {'
 +'\n		background:'+o.primary+';'
@@ -315,8 +320,15 @@ return 'html, body {'
 +'\n		border-bottom:1px solid '+o.tertiary+';'
 +'\n	}'
 +'\n}'
-+'\n.scene {'
-+'\n	background:'+o.primaryl+';'
++'\n.editorlist .listitem {'
++'\n	border-left:1px dashed '+o.secondaryl+';'
++'\n}'
++'\n.editorlist [data-rakkaz].list .item[data-selected], .editorlist [data-rakkaz].list .listitem[data-selected] {'
++'\n	background:'+o.primaryl+' !important;'
++'\n	border-left:1px dashed '+o.accent+';'
++'\n}'
++'\n.editorlist textarea, .editorlist input {'
++'\n	color:'+o.text+';'
 +'\n}';
 };
 
@@ -1157,6 +1169,18 @@ toupper = function (obj) {
 	return obj.toUpperCase();
 };
 var
+select_content = function (e) {
+	if (e instanceof HTMLInputElement || e instanceof HTMLTextAreaElement) {
+		if (isfun(e.select))
+			e.select();
+	} else {
+		var range = document.createRange();
+		range.selectNodeContents(e);
+		var sel = window.getSelection();
+		sel.removeAllRanges();
+		sel.addRange(range);
+	}
+},
 enc = function (v) {
 	return encodeURIComponent(v);
 },
@@ -1673,7 +1697,7 @@ var webapp, appname = 'screenplay' || '',
 			}
 		},
 		uponresize: function () {
-			$.taxeer('taHjeem', function () {
+			$.taxeer('webappresize', function () {
 				if (innerwidth() <= 320) {
 					setdata(bod, 'aqil', 1);
 				} else {
@@ -1698,11 +1722,6 @@ var webapp, appname = 'screenplay' || '',
 					setdata(bod, 'wastah', 1);
 				} else {
 					popdata(bod, 'wastah');
-				}
-				if (innerwidth() >= 1024) {
-					setdata(bod, 'tvfs', 1);
-				} else {
-					popdata(bod, 'tvfs');
 				}
 			}, 100);
 			if (innerheight() <= 480) document.body.dataset.keyboardopen = 1;
@@ -3048,21 +3067,21 @@ var preferences;
 		},
 	};
 	var buildnum = preferences.get('#', 1);
-	if ( buildnum != 482 ) {
+	if ( buildnum != 616 ) {
 		preferences.pop(3); // ruid
 		preferences.pop('@'); // last sync time
 		preferences.pop(4); // list view cache
 		preferences.pop(6); // initial sync done
 	}
-	preferences.set('#', 482);
+	preferences.set('#', 616);
 	Hooks.set('ready', function () {
-		if ( buildnum != 482 ) {
+		if ( buildnum != 616 ) {
 			$.taxeer('seeghahjadeedah', function () {
 				Hooks.run('seeghahjadeedah', buildnum);
 			}, 2000);
 		}
 	});
-	$.log.s( 482 );
+	$.log.s( 616 );
 })();
 var activity;
 ;(function(){
@@ -3853,27 +3872,29 @@ var helpers;
 			else
 				return mins + ' ' + xlate('minute');
 		},
-		alias: function (string, length) {
+		alias: function (string, length, dont_lower, dont_dash) {
 			string = string || '';
 			length = length || 255;
+			var dash = '-';
 			if (string.length === 0) return '';
+			if (!dont_lower) string = tolower(string);
+			if (dont_dash) dash = ' ';
 			return string.substr(0, length)
 						.replace(/\%/g, ' pct' )
 						.replace(/\@/g, ' at ' )
 						.replace(/\&/g, ' and ' )
-						.replace(/[$-\-/:-?\{\}-~!"^_`\[\]@#]/g, '-' ) // symbols
-						.replace(/[^.\d\wa-zA-Z0-9ا-ےÄäÜüÖößЀ-ҁҊ-ӿÇçĞğŞşIıÜüﻙ]+/g, '-' ) // most alphanums
-						.replace(/\s[\s]+/g, '-' )
-						.replace(/[\s]+/g, '-' )
+						.replace(/[$-\-/:-?\{\}-~!"^_`\[\]@#]/g, dash ) // symbols
+						.replace(/[^.\d\wa-zA-Z0-9ا-ےÄäÜüÖößЀ-ҁҊ-ӿÇçĞğŞşIıÜüﻙ]+/g, dash ) // most alphanums
+						.replace(/\s[\s]+/g, dash )
+						.replace(/[\s]+/g, dash )
 						.replace(/^[\-]+/g, '' )
 						.replace(/[\-]+$/g, '' )
-						.replace(/\-\-/g, '-' )
+						.replace(/\-\-/g, dash )
 						.replace(/\.\-/g, '.' )
 						.replace(/\-\./g, '.' )
 						.replace(/^\./g, '' )
 						.replace(/\.$/g, '' )
-						.trim()
-						.toLowerCase();
+						.trim();
 		},
 		countwords: function (text) {
 			text = text || '';
@@ -4251,10 +4272,10 @@ var settings, currentad;
 			});
 		}],*/
 		['reportbug', 0, function () {
-			activity.abrad(myemail+'?subject='+appname+' bug '+482);
+			activity.abrad(myemail+'?subject='+appname+' bug '+616);
 		}],
 		['requestfeat', 0, function () {
-			activity.abrad(myemail+'?subject='+appname+' request '+482);
+			activity.abrad(myemail+'?subject='+appname+' request '+616);
 		}],
 		['timeformat', function () {
 			var is24 = preferences.get(24, 1);
@@ -4353,9 +4374,13 @@ var settings, currentad;
 	Hooks.set('viewready', function (args) {
 		switch (args.name) {
 			case 'main':
-				softkeys.set('9', function () {
-					Hooks.run('view', 'settings');
-				}, '9', 'iconsettings');
+				softkeys.add({ n: 'Settings',
+					k: '9',
+					i: 'iconsettings',
+					c: function () {
+						Hooks.run('view', 'settings');
+					}
+				});
 				break;
 			case 'settings':
 				if (pager) {
@@ -4796,19 +4821,30 @@ var softkeys, K, P;
 				return removableparent(parent);
 		}
 	},
-	updatekey = function (k) {
-		var parent, o = {}, classes = '', args = M[k];
+	updatekey = function (uid) {
+		var parent, o = {}, classes = '', args = M[uid];
 		if (!args) return;
-		if (args.length === 1) o.hidden = 1;
-		if (args[0]) o.onclick = function (e) {
+		if (args.length === 1 || args.hidden || args.h) o.hidden = 1;
+		var callback = args[0] || args.callback;
+		var k = args.key || uid;
+		if (callback) o.onclick = function (e) {
 			var key = e ? e.key : undefined;
-			args[0](key, e);
+			callback(key, e);
 		};
-		o.label = args[1] || '';
-		o.icon = args[2];
-		o.status = args[3];
+		o.name = args.name || args.n || '';
+		o.label = args[1] || args.label || args.l || '';
+		o.icon = args[2] || args.icon || args.i;
+		o.status = args[3] || args.status || args.s;
 		if (o.icon === false) {
 			o.name = k;
+		}
+		if (!isarr(args)) { // only .add API
+			o.name += (o.name ? '\n' : '')
+						+ (args.ctrl ? 'ctrl ' : '')
+						+ (args.alt ? 'alt ' : '')
+						+ (args.shift ? 'shift ' : '')
+						+ (args.key || uid)
+						;
 		}
 		if ( k == K.sl ) classes = 'left' ;
 		if ( k == K.en ) classes = 'center';
@@ -4867,8 +4903,7 @@ var softkeys, K, P;
 		P: P,
 		K: K,
 		saveto: 7,
-		/*
-		* clear previous map explicitly, .map doesn't clear it by default
+		/* clear previous map explicitly, .map doesn't clear it by default
 		* */
 		clear: function () {
 			M = {};
@@ -4883,7 +4918,7 @@ var softkeys, K, P;
 			M[name][3] = yes ? 1 : undefined;
 			softkeys.update();
 		} },
-		talaf: function (name) {
+		talaf: function (name) { // TODO deprecate, NEW remove
 			if (name) {
 				if (name instanceof Array) {
 					name.forEach(function (n) {
@@ -4912,8 +4947,7 @@ var softkeys, K, P;
 				softkeysui.dataset.hidden = 1;
 			}, 2500);
 		},
-		/*
-		* remember one or more actions which you can recall later
+		/* remember one or more actions which you can recall later
 		* you can also forget stored actions
 		* */
 		hfiz: function (name) { // remember
@@ -4943,7 +4977,7 @@ var softkeys, K, P;
 		* update a single key definition in M
 		* status 0normal 1selected 2disabled
 		* */
-		set: function (name, callback, label, icon, status) {
+		set: function (name, callback, label, icon, status) { // TODO deprecate for add
 			if (name) {
 				if (isarr(name)) {
 					name.forEach(function (n, i) {
@@ -4962,7 +4996,35 @@ var softkeys, K, P;
 				softkeys.update(name);
 				backstack.set('softkeys', M);
 			}
-			return softkeys;
+			return this;
+		},
+		add: function (o) { // use this instead of .set
+			/* key uid is based on mods + keyname
+			properties
+			uid generated, you can later use it to remove keys
+			n name
+			h hidden
+			i icon
+			l label
+			s status
+			k key
+			c cb callback
+			*/
+			o.callback = o.callback || o.c || o.cb;
+			o.key = tolower(o.key || o.k);
+			if ( isfun(o.callback) && isstr(o.key) ) {
+				o.uid = (o.ctrl ? 1 : 0) +'-'+
+						(o.alt ? 1 : 0) +'-'+
+						(o.shift ? 1 : 0) +'-'+
+						o.key;
+				M[ o.uid ] = o;
+				updatekey(o.uid);
+				backstack.set('softkeys', M);
+			}
+			return this;
+		},
+		remove: function (uid) { // use this instead of .talaf
+			this.talaf(uid);
 		},
 		/*
 		* preset P.<name>
@@ -5082,8 +5144,7 @@ var softkeys, K, P;
 					if (k == K.en && a.onclick) a.onclick(), pd();
 				}
 			}
-			/*
-			* if text field isn't empty, disable arrow key handling
+			/* if text field isn't empty, disable arrow key handling
 			* K.bs is managed by KaiOS
 			* */
 			if (editmode && !length) {
@@ -5097,9 +5158,19 @@ var softkeys, K, P;
 			caught = caught || Hooks.rununtilconsumed('softkey', [k, e || {}, e && e.type, longpress]);
 			if (caught) return;
 			var mmm = M[kraw] || M[k];
-			if ((!editmode || e.altKey || global_keys.includes(k))
-				&& mmm && typeof mmm[0] == 'function') {
-				caught = mmm[0](k, e, e && e.type, longpress);
+			/* if defined key has ctrl yes; then just in that case let it through
+			*/
+			var let_through, callback = mmm ? mmm[0] : 0;
+			var event = e || {};
+			var uid = (event.ctrlKey?1:0) +'-'+ (event.altKey?1:0) +'-'+ (event.shiftKey?1:0) +'-'+ k;
+			if (M[uid]) {
+				mmm = M[uid];
+				callback = mmm.callback;
+				let_through = 1;
+			}
+			if ( (!editmode || e.altKey || let_through || global_keys.includes(k)) && mmm && isfun(callback)
+			) {
+				caught = callback(k, e, e && e.type, longpress);
 				if ( caught ) pd(); // prevent default if true is returned
 			} else {
 				/*if (k == K.dn) {
@@ -5131,6 +5202,9 @@ var softkeys, K, P;
 		},
 	};
 	softkeys.showhints();
+	softkeys.M = function () {
+		return M;
+	};
 	var autoheight = function (a) {
 		if (a instanceof HTMLTextAreaElement) {
 			setcss(a, 'height', 0);
@@ -5142,7 +5216,7 @@ var softkeys, K, P;
 	var resize = function () {
 		var w = innerwidth(), sl = index[K.sl], sr = index[K.sr];
 		if (w > 720) {
-			var ww = ((innerwidth()-640)/2);
+			var ww = ((innerwidth()-590)/2);
 			if (sl) setcss(sl, 'width', ww+'px');
 			if (sr) setcss(sr, 'width', ww+'px');
 		} else {
@@ -5560,10 +5634,14 @@ var themes;
 		P = softkeys.P; // presets
 		switch (args.name) {
 			case 'main':
-				softkeys.set(1, function (k, e) {
-					themes.toggle();
-					e && e.preventDefault();
-				}, '1', 'icontheme');
+				softkeys.add({ n: 'Theme',
+					k: '1',
+					i: 'icontheme',
+					c: function (k, e) {
+						themes.toggle();
+						e && e.preventDefault();
+					}
+				});
 				break;
 		}
 	});
@@ -6048,7 +6126,7 @@ var shabakah, sessions = sessions || 0;
 		payload = payload || {};
 		payload = Object.assign(payload, {
 			nashar: 1 , // mutawaaqit min qabl (synced before)
-			e$ : 482 , // insha 3adad
+			e$ : 616 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		xataalog(payload);
@@ -6093,7 +6171,7 @@ var shabakah, sessions = sessions || 0;
 		if (Object.keys(mu3allaq).length === 0) return;
 		payload = payload || {};
 		payload = Object.assign(payload, {
-			e$ : 482 , // insha 3adad
+			e$ : 616 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		payload.axav = payload.axav || {};
@@ -6151,7 +6229,7 @@ var shabakah, sessions = sessions || 0;
 		if (Object.keys(mutawaaqit).length === 0) return;
 		payload = payload || {};
 		payload = Object.assign(payload, {
-			e$ : 482 , // insha 3adad
+			e$ : 616 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		payload.waaqat = payload.waaqat || {};
@@ -6182,7 +6260,7 @@ var shabakah, sessions = sessions || 0;
 	var rafa3 = function (ism, haajah, qadr, marfoo3, wasaatat) {
 		var payload = {};
 		payload = Object.assign(payload, {
-			e$ : 482 , // insha 3adad
+			e$ : 616 , // insha 3adad
 		});
 		if (wasaatat) payload = Object.assign(payload, wasaatat);
 		payload.rafa3 = {};
@@ -6384,6 +6462,7 @@ var editorlist, editor, currently_open_file;
 					if ([1, 2, 3, 4].includes(o.type)) {
 						softkeys.autoheight( keys.text );
 					}
+					select_content( keys.text );
 				}
 			}
 		},
@@ -6396,10 +6475,7 @@ var editorlist, editor, currently_open_file;
 				if (o.type === 0) { // Scene
 					k.time_text.focus();
 				}
-				if (o.type === 1) { // Action
-					k.text.focus();
-				}
-				if (o.type === 2) { // Dialog
+				if ([1, 2, 3, 4].includes(o.type)) { // Action, Character Name, Dialog, Parenthetical
 					k.text.focus();
 				}
 			}
@@ -6457,12 +6533,12 @@ var editorlist, editor, currently_open_file;
 					if ([1, 2, 3, 4].includes(type)) { // Action, Character Name, Dialog, Parenthetical
 						options.text = o[1];
 					}
-					editor.add(type, options);
+					editor.add(type, options, 1);
 				}
 			});
 			editor.focus_first_element();
 		} },
-		add: function (type, options) {
+		add: function (type, options, dont_select) {
 			options = options || {};
 			var o = {
 				type: type || 0,
@@ -6497,14 +6573,39 @@ var editorlist, editor, currently_open_file;
 				o.text += ' '+editorlist.length();
 			}
 			editorlist.set(o);
-			if ([1, 2, 3, 4].includes(o.type)) {
-				var k = editorlist.get_item_keys( o.uid );
-				softkeys.autoheight( k.text );
-			}
+			var k = editorlist.get_item_keys( o.uid );
+			if (!dont_select) select_content( k.text );
 			editorlist.select();
 			editorlist.down();
 			editor.focus_first_element();
 			xlate.update();
+			if ([1, 2, 3, 4].includes(o.type)) {
+				$.taxeer(o.uid, function () {
+					softkeys.autoheight( k.text );
+				}, 3);
+			}
+		},
+		contextual_add: function () {
+			/* LOGIC
+			if standing on Scene, Action, adds Action
+			Parenthetical, Charname adds Dialog
+			*/
+			var future_type = 0;
+			var cur = editorlist.get_item_element();
+			if (cur) {
+				var uid = getdata( cur , 'uid' );
+				var o = editorlist.adapter.get( uid );
+				if ([0, 1].includes(o.type)) { // Scene, Action
+					future_type = 1; // Action
+				}
+				if ([2, 4].includes(o.type)) { // Charname, Parenthetical
+					future_type = 3; // Dialog
+				}
+				if ([3].includes(o.type)) { // Dialog
+					future_type = 1; // Action
+				}
+			}
+			editor.add( future_type );
 		},
 		focus_first_element: function () {
 			$.taxeer('ffe', function () {
@@ -6516,14 +6617,15 @@ var editorlist, editor, currently_open_file;
 		mfateeh = view.mfateeh( 'edit' );
 		editorlist = list( mfateeh.list )
 						.idprefix( 'editorlist' )
-						.listitem('scene')
+						.listitem( 'scene' )
 					;
 		editorlist.uponpaststart = editorlist.uponpastend = function () {
 			return 1;
 		};
 		editorlist.after_set = function (o, c, k) {
 			k.text.uponenter = function (atstart, atend) {
-				if (atend) editor.add();
+				if (atend)
+					editor.contextual_add();
 			};
 			if (o.type === 0) { // Scene
 				k.place_text.on_focus_prev = editor.prev;
@@ -6562,32 +6664,87 @@ var editorlist, editor, currently_open_file;
 		editor.focus_first_element();
 		pager.intaxab('edit', 1);
 		webapp.header();
-		softkeys.set('9', function (k, e) {
-			editor.replace_with();
-		}, '9', 'iconrefresh', 0);
-		softkeys.set('delete', function (k, e) {
-			if (e.altKey || e.type != 'keydown') {
+		softkeys.add({ n: 'Move Up',
+			k: K.up,
+			alt: 1,
+			hidden: 0,
+			i: 'iconarrowupward',
+			c: function () {
+				editorlist.moveup();
+				editor.focus_first_element();
+			},
+		});
+		softkeys.add({ n: 'Move Down',
+			hidden: 0,
+			k: K.dn,
+			alt: 1,
+			i: 'iconarrowdownward',
+			c: function () {
+				editorlist.movedown();
+				editor.focus_first_element();
+			},
+		});
+		softkeys.add({ n: 'Next Format',
+			k: '9',
+			alt: 1,
+			i: 'iconrefresh',
+			c: function () {
+				editor.replace_with();
+			},
+		});
+		softkeys.add({ n: 'Save',
+			k: 's',
+			i: 'iconsave',
+			ctrl: 1,
+			c: function () {
+				editor.save();
+			},
+		});
+		softkeys.add({ n: 'Delete',
+			k: 'delete',
+			i: 'icondeleteforever',
+			alt: 1,
+			c: function () {
 				editorlist.pop();
 				editor.focus_first_element();
-			}
-			else return 0; // cancel anim [waiting for SK modifier support]
-		}, 'd', 'icondeleteforever', 0);
-		softkeys.set(['0', 's'], function (k, e) {
-			if (e.altKey || e.type != 'keydown') editor.save();
-			else return 0; // cancel anim [waiting for SK modifier support]
-		}, '1', 'iconsave', 0);
-		softkeys.set('2', function () {
-			editor.add(2);
-		}, '2', 'iconperson', 0);
-		softkeys.set('3', function () {
-			editor.add(3);
-		}, '3', 'iconquote', 0);
-		softkeys.set('1', function () {
-			editor.add(1);
-		}, '1', 'iconshorttext', 0);
-		softkeys.set(K.sl, function () {
-			editor.add(0);
-		}, 0, 'iconadd', 0);
+			},
+		});
+		softkeys.add({ n: 'Add',
+			k: K.sl,
+			i: 'iconadd',
+			c: function () {
+				editor.contextual_add();
+			},
+		});
+		/*softkeys.add({ n: 'Add',
+			k: K.en,
+			ctrl: 1,
+			i: 'iconadd',
+			c: function () {
+				editor.contextual_add();
+			},
+		});*/
+		softkeys.add({ n: 'Character',
+			k: '2',
+			i: 'iconperson',
+			c: function () {
+				editor.add(2);
+			},
+		});
+		softkeys.add({ n: 'Dialog',
+			k: '3',
+			i: 'iconquote',
+			c: function () {
+				editor.add(3);
+			},
+		});
+		softkeys.add({ n: 'Action',
+			k: '1',
+			i: 'iconshorttext',
+			c: function () {
+				editor.add(1);
+			},
+		});
 	} });
 })();
 /* TODO
@@ -6666,7 +6823,7 @@ var screenplaylist, main;
 			} else {
 				backstack.dialog({
 					c: function (name) {
-						name = helpers.alias(name || '', 96);
+						name = helpers.alias(name || '', 96, 1, 1);
 						Files.set.folder(rootpath);
 						if (name.length) {
 							name += '.screenplay';
@@ -6755,10 +6912,10 @@ var screenplaylist, main;
 				});
 			}
 		});
-		$.taxeer('switch', function () {
+		/*$.taxeer('switch', function () {
 			Hooks.run('view', 'edit');
 			main.read_file( rootpath+'/Dark.screenplay' );
-		}, 100);
+		}, 100);*/
 	});
 	Hooks.set('viewready', function (args) { if (args.name == 'main') {
 		pager.intaxab('main', 1);
@@ -6788,6 +6945,7 @@ var screenplaylist, main;
 	});
 	Hooks.set('restore', function (args) {
 		webapp.header();
+		screenplaylist.rakkaz(1, 1);
 	});
 })();
 

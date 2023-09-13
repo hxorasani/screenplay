@@ -1,4 +1,8 @@
 {
 	"name": "screenplay",
-	"main": "manaashir/index.html"
+	"main": "manaashir/index.html",
+	"window": {
+		"width": 800,
+		"height": 900
+	}
 }
