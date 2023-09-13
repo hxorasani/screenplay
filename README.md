@@ -1,4 +1,4 @@
-![Screenplay App written using Mudeer](manaashir/e.png | width=48)
+<p align=center><img src=./manaashir/e.png width=128px /></p>
 
 # Screenplay
 Screen writing app, tiny+fast+offline
