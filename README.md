@@ -1,5 +1,8 @@
-# screenplay
+![Screenplay App written using Mudeer](manaashir/e.png | width=48)
+
+# Screenplay
 Screen writing app, tiny+fast+offline
+
 
 # Limitations
 * Sadly, no web browsers currently support persistent storage, so I figured that  
