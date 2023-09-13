@@ -276,7 +276,7 @@ var editorlist, editor, currently_open_file;
 
 				k.XPO.time_text.on_focus_next = editor.next;
 				k.XPO.time_text.onclick = function () {
-					if (o.time == 0) o.time = 1, setdata(k.XPO.time_text, 'XPO.i18n', 'XPO.day');
+						 if (o.time == 0) o.time = 1, setdata(k.XPO.time_text, 'XPO.i18n', 'XPO.day');
 					else if (o.time == 1) o.time = 2, setdata(k.XPO.time_text, 'XPO.i18n', 'XPO.night');
 					else if (o.time == 2) o.time = 3, setdata(k.XPO.time_text, 'XPO.i18n', 'XPO.morning');
 					else if (o.time == 3) o.time = 4, setdata(k.XPO.time_text, 'XPO.i18n', 'XPO.evening');
@@ -331,7 +331,7 @@ var editorlist, editor, currently_open_file;
 		softkeys.add({ n: 'Next Format',
 			k: '9',
 			alt: 1,
-			i: 'XPO.iconrefresh',
+			i: 'XPO.iconarrowforward',
 			c: function () {
 				editor.replace_with();
 			},

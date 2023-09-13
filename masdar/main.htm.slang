@@ -2,22 +2,24 @@
 body
 	+include managed.htm.slang
 	[view=main]
-		p
-			.red .upper .bold .tag .pad .centertext
-				"Not production ready. use at your own peril."
-		div #screenplayfolder .tag .pad .centertext
-			p "This app will create a 'Screenplays' folder in your chosen location."
-			p "Press the folder icon in the bottom left corner."
+		.pad .padv .gapb
+			div .tag .pad .centertext
+				.red .upper .bold
+					"Not production ready. use at your own peril."
+				div #screenplayfolder
+					span .dim "Saving to"
+					span .bold [id=path]
 		[id=list]
 
 	[view=edit] .monospace .editorlist
-		p
+		p .gapb .pad .padv
 			.bold .tag .pad .centertext [id=currently_open_file]
-		hr
 		[id=list]
 		.scroll_break
 
-	[template=screenplay] .screenplay .listitem .flex
+	[template=screenplay] .screenplay .listitem .flex .vcenterkids .pad
+		[id=title] .title .big
+		[id=extension] .extension .dim
 
 	[template=scene] .listitem .flex .scene
 		button [id=place_text]

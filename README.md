@@ -6,6 +6,9 @@ Screen writing app, tiny+fast+offline
 the most user-friendly way would be to just allow drag and drop to open ``.screenplay`` files
 
 # TODO (Planned Features)
+* **Screenplays List**
+	* allow renaming files
+	* optionally allow backing up marked screenplays to the cloud
 * **Global character mapping**:
 	* so that you can rename characters across your screenplay in a single go
 * **Dialog colors**:

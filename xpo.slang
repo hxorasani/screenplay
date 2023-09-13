@@ -7,7 +7,7 @@ iconarrowdownward   iconarrowdownward
 icondeleteforever   icondeleteforever
 statusbarpadding    statusbarpadding
 keydownlongpress    keydownlongpress
-shabakahittasaal    shabakahittasaal
+iconarrowforward    iconarrowforward
 screenplayfolder    screenplayfolder
 rununtilconsumed    rununtilconsumed
 statusbarshadow     statusbarshadow
@@ -25,9 +25,6 @@ backstackfocus      backstackfocus
 pagermowjoodah      pagermowjoodah
 resizesoftkeys      resizesoftkeys
 softkeysminmax      softkeysminmax
-appneedsreload      appneedsreload
-shabakahnashar      shabakahnashar
-shabakahwaaqat      shabakahwaaqat
 iconfolderopen      iconfolderopen
 screenplaylist      screenplaylist
 scrolltobottom      scrolltobottom
@@ -39,8 +36,6 @@ backstackview       backstackview
 backstackmain       backstackmain
 softkeyshints       softkeyshints
 navigationend       navigationend
-shabakahajraa       shabakahajraa
-sessionchange       sessionchange
 parenthetical       parenthetical
 iconshorttext       iconshorttext
 select_folder       select_folder
@@ -59,8 +54,6 @@ iconsettings        iconsettings
 bodyshowhtml        bodyshowhtml
 visiblesheet        visiblesheet
 dynamicstyle        dynamicstyle
-setnotifybar        setnotifybar
-jawaabwaaqat        jawaabwaaqat
 alreadytaken        alreadytaken
 iconmorevert        iconmorevert
 taxeercancel        taxeercancel
@@ -76,7 +69,6 @@ domformdata         domformdata
 contextmenu         contextmenu
 templateset         templateset
 updatetheme         updatetheme
-nasharbadaa         nasharbadaa
 iconrefresh         iconrefresh
 fetchcancel         fetchcancel
 scrolltotop         scrolltotop
@@ -103,11 +95,10 @@ secondaryd          secondaryd
 secondaryt          secondaryt
 themecolor          themecolor
 navigation          navigation
-shabakahui          shabakahui
-jawaabaxav          jawaabaxav
 place_text          place_text
 editorlist          editorlist
 iconperson          iconperson
+screenplay          screenplay
 iconfolder          iconfolder
 iconsearch          iconsearch
 queuearray          queuearray
@@ -222,9 +213,6 @@ accentxt            accentxt
 accentdt            accentdt
 question            question
 sklamsah            sklamsah
-ittasaal            ittasaal
-shabakah            shabakah
-wasaatat            wasaatat
 iconsave            iconsave
 iconmenu            iconmenu
 iconedit            iconedit
@@ -250,7 +238,6 @@ _seconds            _seconds
 _hours12            _hours12
 _dayname            _dayname
 touchdir            touchdir
-mundarij            mundarij
 eqonahui            eqonahui
 absolute            absolute
 relative            relative
@@ -324,6 +311,7 @@ shimaal             shimaal
 biggest             biggest
 vcenter             vcenter
 allcaps             allcaps
+tooltip             tooltip
 skenter             skenter
 heading             heading
 notime              notime
@@ -361,8 +349,6 @@ accent              accent
 yellow              yellow
 answer              answer
 lamsah              lamsah
-waaqat              waaqat
-nashar              nashar
 action              action
 delete              delete
 switch              switch
@@ -402,7 +388,6 @@ onprev              onprev
 cancel              cancel
 onshow              onshow
 toggle              toggle
-jawaab              jawaab
 medium              medium
 bigger              bigger
 sticky              sticky
@@ -433,13 +418,13 @@ index               index
 ixtaf               ixtaf
 izhar               izhar
 right               right
+shown               shown
 under               under
 textl               textl
 textd               textd
 green               green
 input               input
 align               align
-rafa3               rafa3
 scene               scene
 _mods               _mods
 regex               regex
@@ -514,10 +499,8 @@ init                init
 text                text
 redl                redl
 redd                redd
-axav                axav
-json                json
-xarq                xarq
 edit                edit
+path                path
 each                each
 _map                _map
 _uid                _uid
@@ -525,6 +508,7 @@ hook                hook
 last                last
 down                down
 axad                axad
+axav                axav
 matn                matn
 _day                _day
 year                year
@@ -574,6 +558,7 @@ age                 age
 dir                 dir
 rtl                 rtl
 ltr                 ltr
+key                 key
 red                 red
 max                 max
 ffe                 ffe

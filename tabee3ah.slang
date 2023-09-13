@@ -44,6 +44,7 @@ eqonaat
 	edit
 	close
 	menu
+	arrowforward
 	arrowback
 	add
 	quote
@@ -78,7 +79,6 @@ ishtamal
 	dialog
 	webapp.touch
 	softkeys.touch
-	shabakah
 xudoo3
 sinf     zaboon
 width	800px

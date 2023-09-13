@@ -23,4 +23,3 @@
 +include linked/dialog.js
 +include linked/webapp.touch.js
 +include linked/softkeys.touch.js
-+include linked/shabakah.js

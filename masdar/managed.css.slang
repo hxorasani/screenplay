@@ -23,4 +23,3 @@
 +include linked/dialog.css.slang
 +include linked/webapp.touch.css.slang
 +include linked/softkeys.touch.css.slang
-+include linked/shabakah.css.slang

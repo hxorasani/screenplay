@@ -9,7 +9,7 @@ var screenplaylist, main;
 
 	var fs = require('fs'); // TODO ifify
 	var rootpath = process.env.HOME + '/Screenplays';
-	var mfateeh;
+	var mfateeh, extension = '.screenplay';
 	
 	main = {
 		read_file: async function ( fileHandle ) {
@@ -86,7 +86,7 @@ var screenplaylist, main;
 						name = helpers.alias(name || '', 96, 1, 1);
 						Files.set.folder(rootpath);
 						if (name.length) {
-							name += '.screenplay';
+							name += extension;
 							var path = rootpath + '/' + name;
 							var oldfile = false;
 							try {
@@ -98,7 +98,8 @@ var screenplaylist, main;
 							} else {
 								Files.set.file(path, '');
 								var clone = screenplaylist.set({
-									title: name,
+									title: name.substr(0, name.length-extension.length),
+									extension: extension,
 									before: screenplaylist.get( 0 ),
 								});
 								screenplaylist.select( 0 );
@@ -144,6 +145,9 @@ var screenplaylist, main;
 	Hooks.set('XPO.ready', function (args) {
 		document.title = 'Screenplay';
 
+		mfateeh = view.mfateeh('XPO.main');
+		innertext(mfateeh.XPO.path, rootpath);
+
 		if (pager) {
 			pager.safaa();
 			pager.jama3('XPO.main',			'XPO.iconmenu',		xlate('XPO.all'));
@@ -155,9 +159,8 @@ var screenplaylist, main;
 		webapp.statusbarpadding();
 		webapp.header();
 		
-		mfateeh = view.mfateeh('XPO.main');
-		
-		screenplaylist = list( mfateeh.XPO.list ).idprefix('XPO.screenplaylist');
+		screenplaylist = list( mfateeh.XPO.list ).idprefix('XPO.screenplaylist')
+							.listitem( 'XPO.screenplay' );
 		screenplaylist.onpress = function (o, k) {
 			if (k == '0') {
 				if ( confirm( translate( 'XPO.delete' ) ) ) {
@@ -165,21 +168,22 @@ var screenplaylist, main;
 				}
 			}
 			if (k == K.en) {
-				var content = fs.readFileSync('/home/nano/Screenplays/'+o.title).toString();
+				var content = fs.readFileSync('/home/nano/Screenplays/'+o.title+extension).toString();
 				
 				var json = [];
 				try { json = JSON.parse(content); } catch (e) {}
 
-				editor.load( '/home/nano/Screenplays/'+o.title, json );
+				editor.load( '/home/nano/Screenplays/'+o.title+extension, json );
 				Hooks.run('XPO.view', 'XPO.edit');
 			}
 		};
 		
 		var arr = fs.readdirSync('/home/nano/Screenplays');
 		arr.reverse().forEach(function (o, i) {
-			if (o.endsWith('.screenplay')) {
+			if (o.endsWith(extension)) {
 				screenplaylist.set({
-					title: o,
+					title: o.substr(0, o.length-extension.length),
+					extension: extension
 				});
 			}
 		});
@@ -194,15 +198,28 @@ var screenplaylist, main;
 		screenplaylist.rakkaz(1, 1);
 		softkeys.list.basic(screenplaylist);
 
-		softkeys.set('3', function () {
-			main.open();
-		}, '3', 'XPO.iconfolderopen', 0);
-		softkeys.set('0', function () {
-			screenplaylist.press('0');
-		}, '0', 'XPO.icondeleteforever', 0);
-		softkeys.set(K.sl, function () {
-			main.create();
-		}, 0, 'XPO.iconadd', 0);
+		softkeys.add({ n: 'Open',
+			k: 'o',
+			ctrl: 1,
+			i: 'XPO.iconfolderopen',
+			c: function () {
+				main.open();
+			}
+		});
+		softkeys.add({ n: 'Delete',
+			k: 'delete',
+			i: 'XPO.icondeleteforever',
+			c: function () {
+				screenplaylist.press('0');
+			}
+		});
+		softkeys.add({ n: 'New',
+			k: K.sl,
+			i: 'XPO.iconadd',
+			c: function () {
+				main.create();
+			}
+		});
 		//main.is_folder_selected();
 
 		screenplaylist.select();
@@ -214,10 +231,12 @@ var screenplaylist, main;
 			// _and_ directory entries.
 			if (item.kind == 'file') {
 				const entry = await item.getAsFileSystemHandle();
-				if (entry.kind == 'directory') {
-					//handleDirectoryEntry(entry);
-				} else {
-					main.read_file(entry);
+				if (entry) {
+					if (entry.kind == 'directory') {
+						//handleDirectoryEntry(entry);
+					} else {
+						main.read_file(entry);
+					}
 				}
 			}
 		}

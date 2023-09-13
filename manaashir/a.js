@@ -128,7 +128,11 @@ return 'html, body {'
 +'\n	border-color:'+o.secondaryt+';'
 +'\n}'
 +'\n@media (min-width:320px) {'
-+'\n	#softkeysui .row2 button label {'
++'\n	#softkeysui .row2 button .tooltip {'
++'\n		border:1px solid '+o.secondaryd+';'
++'\n		background:'+o.primaryl+';'
++'\n	}'
++'\n	#softkeysui button .key {'
 +'\n		background:'+o.secondaryd+';'
 +'\n	}'
 +'\n}'
@@ -3067,21 +3071,21 @@ var preferences;
 		},
 	};
 	var buildnum = preferences.get('#', 1);
-	if ( buildnum != 616 ) {
+	if ( buildnum != 686 ) {
 		preferences.pop(3); // ruid
 		preferences.pop('@'); // last sync time
 		preferences.pop(4); // list view cache
 		preferences.pop(6); // initial sync done
 	}
-	preferences.set('#', 616);
+	preferences.set('#', 686);
 	Hooks.set('ready', function () {
-		if ( buildnum != 616 ) {
+		if ( buildnum != 686 ) {
 			$.taxeer('seeghahjadeedah', function () {
 				Hooks.run('seeghahjadeedah', buildnum);
 			}, 2000);
 		}
 	});
-	$.log.s( 616 );
+	$.log.s( 686 );
 })();
 var activity;
 ;(function(){
@@ -4272,10 +4276,10 @@ var settings, currentad;
 			});
 		}],*/
 		['reportbug', 0, function () {
-			activity.abrad(myemail+'?subject='+appname+' bug '+616);
+			activity.abrad(myemail+'?subject='+appname+' bug '+686);
 		}],
 		['requestfeat', 0, function () {
-			activity.abrad(myemail+'?subject='+appname+' request '+616);
+			activity.abrad(myemail+'?subject='+appname+' request '+686);
 		}],
 		['timeformat', function () {
 			var is24 = preferences.get(24, 1);
@@ -4777,13 +4781,13 @@ var templates, namaavij;
 	namaavij.axav = namaavij.get;
 })();
 /* TODO
-* add modifier support alt, ctrl, meta, cmd ...
-* softkeys.modifiers([]).set(...)
+* add .alias to support linking secondary keysets to a shortcut entry
 * */
 /* FEATURES
 <element>.on_focus_prev() triggered when K.up is pressed on an element
 <element>.on_focus_next() triggered when K.dn is pressed on an element
 all keyups are pd'd, fig out logic for keydowns in .press
+modifiers now do work! 13 sep 2023
 */
 var softkeys, K, P;
 ;(function(){
@@ -4839,8 +4843,7 @@ var softkeys, K, P;
 			o.name = k;
 		}
 		if (!isarr(args)) { // only .add API
-			o.name += (o.name ? '\n' : '')
-						+ (args.ctrl ? 'ctrl ' : '')
+			o.key = (args.ctrl ? 'ctrl ' : '')
 						+ (args.alt ? 'alt ' : '')
 						+ (args.shift ? 'shift ' : '')
 						+ (args.key || uid)
@@ -4939,11 +4942,13 @@ var softkeys, K, P;
 		},
 		showhints: function () {
 			delete softkeysui.dataset.hidden;
+			setdata(softkeysui, 'shown', 1);
 			if (!skhelp.hidden) {
 				skhelp.hidden = 1;
 				preferences.set(7, 1);
 			}
 			$.taxeer('softkeyshints', function () {
+				popdata(softkeysui, 'shown');
 				softkeysui.dataset.hidden = 1;
 			}, 2500);
 		},
@@ -5966,437 +5971,6 @@ var dialog;
 		}
 	});*/
 })();
-/*
-* it has 3 qanawaat for comm with xaadim
-* axav get something from the xaadim immediately
-*
-* waaqat sync changes, zaboon -> xaadim
-* uses .waqt to maintain sync between zaboon & xaadim
-* the response is empty
-* responds through broadcast
-* nashar listens for changes
-* returns on triggers like waaqat from you or others
-* always returns .waqt on success
-* */
-var shabakah, sessions = sessions || 0;
-;(function(){
-	'use strict';
-	var xitaab = 'http://localhost:3000/', buildexpired = false, offlinewaqt,
-		shabakahkeys;
-	var xataalog = function (v) {
-	};
-	var hasdisconnected = function (res) {
-		if (!res.err)
-			setnetwork(1);
-		else if (res.err === -300 || res.err > 300)
-			setnetwork();
-	};
-	var setnetwork = function (on) {
-		if (on) {
-			if (offlinewaqt !== false) {
-				offlinewaqt = false;
-				preferences.pop('@0');
-				Hooks.run('ittasaal', true); // connection
-				$.taxeercancel('shabakahittasaal');
-			}
-			setnotifybar();
-		} else {
-			if (offlinewaqt === false) {
-				offlinewaqt = new Date().getTime();
-				preferences.set('@0', offlinewaqt);
-				Hooks.run('ittasaal', offlinewaqt); // connection
-				$.taxeer('shabakahittasaal', function () {
-					if (sessions)
-					shabakah.axav({
-						i: 'shabakah',
-						h: 'ittasaal',
-					});
-				}, 15*1000);
-			}
-			setnotifybar( 'offlinesince' , offlinewaqt || '');
-		}
-	};
-	var setnotifybar = function (v, t) {
-		if (v) {
-			$.taxeer('setnotifybar', function () {
-				setdata(shabakahkeys.mowdoo3, 'i18n', v);
-				setdata(shabakahkeys.waqt, 'time', t);
-				time(shabakahui);
-				xlate.update(shabakahui);
-			}, t);
-			shabakahui.hidden = 0;
-		} else {
-			shabakahui.hidden = 1;
-		}
-	};
-	var sizeunits = function (num) {
-		if (typeof num === 'number') {
-			if (num >= (1024 * 1024 * 1024 * 1024))
-				return (num / (1024 * 1024 * 1024 * 1024)).toFixed(1) + 'TB';
-			if (num >= (1024 * 1024 * 1024))
-				return (num / (1024 * 1024 * 1024)).toFixed(1) + 'GB';
-			if (num >= (1024 * 1024))
-				return (num / (1024 * 1024)).toFixed(1) + 'MB';
-			if (num >= 1024)
-				return (num / 1024).toFixed() + 'KB';
-		}
-		return '0';
-	}
-	var progressfn = function (loaded, total) {
-		if (total > 4 * 1024) {
-			var percentage = sizeunits(loaded) +' / '+ sizeunits(total) +', '
-							+ (((loaded / total) * 100).toFixed() || 0) + '%';
-			webapp.itlaa3( percentage );
-		}
-	};
-	var hasinshaexpired = function (jawaab) {
-		if (jawaab.e$) {
-			buildexpired = 1;
-			window.caches.delete('def').then(function(del) {
-				webapp.dimmer(LAYERTOPMOST, xlate('appneedsreload'));
-			});
-			nasharanhaa();
-			$.fetchcancel( 'axav' );
-			$.fetchcancel( 'waaqat' );
-		}
-	};
-	var handlejawaab = function (jawaab) {
-		if (jawaab.rafa3)
-		for (var ism in jawaab.rafa3) {
-			if (shabakah.mundarij.rafa3[ism]) {
-				var haajaat = jawaab.rafa3[ism];
-				for (var haajah in haajaat) {
-					if (typeof shabakah.mundarij.rafa3[ism][haajah] == 'function') {
-						shabakah.mundarij.rafa3[ism][haajah](
-							haajaat[haajah]
-						);
-					}
-				}
-			}
-		}
-		if (jawaab.wasaatat)
-		for (var ism in jawaab.wasaatat) {
-			if (shabakah.mundarij.wasaatat[ism]) {
-				var haajaat = jawaab.wasaatat[ism];
-				for (var haajah in haajaat) {
-					if (typeof shabakah.mundarij.wasaatat[ism][haajah] == 'function') {
-						shabakah.mundarij.wasaatat[ism][haajah](
-							haajaat[haajah]
-						);
-					}
-				}
-			}
-		}
-		if (jawaab.axav) {
-			for (var ism in jawaab.axav) {
-				if (shabakah.mundarij.axav[ism]) {
-					var haajaat = jawaab.axav[ism];
-					for (var haajah in haajaat) {
-						if (typeof shabakah.mundarij.axav[ism][haajah] == 'function') {
-							shabakah.mundarij.axav[ism][haajah](
-								haajaat[haajah]
-							);
-						}
-					}
-				}
-			}
-			Hooks.run('jawaabaxav', jawaab.waaqat);
-		}
-		if (jawaab.waaqat) {
-			for (var ism in jawaab.waaqat) {
-				if (shabakah.mundarij.waaqat[ism]) {
-					var haajaat = jawaab.waaqat[ism];
-					for (var haajah in haajaat) {
-						if (typeof shabakah.mundarij.waaqat[ism][haajah] == 'function') {
-							shabakah.mundarij.waaqat[ism][haajah](
-								haajaat[haajah]
-							);
-						}
-					}
-				}
-			}
-			Hooks.run('jawaabwaaqat', jawaab.waaqat);
-		}
-	};
-	var cachedkey, nasharhaalah = 0, nashartaxeer = 500;
-	var nasharishtaghal = function (payload, wasaatat) {
-		if (!cachedkey || !nasharhaalah) return;
-		if ($.fetchchannels.nashar
-		&& $.fetchchannels.nashar.active) return;
-		payload = payload || {};
-		payload = Object.assign(payload, {
-			nashar: 1 , // mutawaaqit min qabl (synced before)
-			e$ : 616 , // insha 3adad
-		});
-		if (wasaatat) payload = Object.assign(payload, wasaatat);
-		xataalog(payload);
-		$.fetch( xitaab, 'json='+enc( JSON.stringify(payload) ), 'nashar', progressfn, 3*60*1000 )
-		.then(function (res) {
-			if (res.err) {
-				nashartaxeer = 4 * 15 * 1000; // 60s
-			} else {
-				hasdisconnected(res);
-				var jawaab = {};
-				try {
-					jawaab = JSON.parse( (res||{}).body );
-				} catch (e) {
-					jawaab.nashar = 1;
-					jawaab.xataa = 1;
-				}
-				if (!jawaab.xataa) nashartaxeer = 500;
-				if (hasinshaexpired(jawaab)) return;
-				handlejawaab(jawaab);
-			}
-			$.taxeer('shabakahnashar', function () {
-				wasaatatishtaghal(function (ashyaa) {
-					nasharishtaghal({}, ashyaa);
-				}, 'nashar');
-			}, nashartaxeer);
-		});
-	};
-	var nasharbadaa = function () {
-		$.taxeer('nasharbadaa', function () {
-			nasharhaalah = 1;
-			wasaatatishtaghal(function (ashyaa) {
-				nasharishtaghal({}, ashyaa);
-			}, 'nashar');
-		}, 1000);
-	};
-	var nasharanhaa = function () {
-		nasharhaalah = 0;
-		$.fetchcancel('nashar');
-	};
-	var mu3allaq = {}; // pending requests
-	var ajraa = function (payload, wasaatat) { // flush pending axav requests
-		if (Object.keys(mu3allaq).length === 0) return;
-		payload = payload || {};
-		payload = Object.assign(payload, {
-			e$ : 616 , // insha 3adad
-		});
-		if (wasaatat) payload = Object.assign(payload, wasaatat);
-		payload.axav = payload.axav || {};
-		for (var i in mu3allaq) {
-			var m = mu3allaq[i] ,
-				ism = m[0] ,
-				haajah = m[1] ,
-				qadr = m[2] ;
-			payload.axav[ism] = payload.axav[ism] || {};
-			payload.axav[ism][haajah] = qadr;
-		}
-		xataalog(payload);
-		$.fetch( xitaab, 'json='+enc( JSON.stringify(payload) ), 'axav', progressfn, 30*1000 )
-		.then(function (res) {
-			hasdisconnected(res);
-			var jawaab = {};
-			try {
-				jawaab = JSON.parse( (res||{}).body );
-			} catch (e) {
-				jawaab.axav = 1;
-				jawaab.xataa = 1;
-			}
-			if (hasinshaexpired(jawaab)) return;
-			handlejawaab(jawaab);
-		});
-		mu3allaq = {};
-	};
-	var wasaatat = {}; // intercession
-	var wasaatatishtaghal = function (callback, qanaat) {
-		var j = 0, arr = Object.keys(wasaatat);
-		if (arr.length === 0) {
-			callback();
-			return;
-		}
-		var q = $.queue(), ashyaa = { wasaatat: {} };
-		for (var i in wasaatat) {
-			q.set(function (done) {
-				var o = wasaatat[ arr[j] ];
-				o[2](function (shayy) {
-					if (shayy !== undefined) {
-						ashyaa.wasaatat[ o[0] ] = ashyaa.wasaatat[ o[0] ] || {};
-						ashyaa.wasaatat[ o[0] ][ o[1] ] = shayy;
-					}
-					j++;
-					done(q);
-				}, qanaat);
-			});
-		}
-		q.run(function () {
-			callback && callback(ashyaa);
-		});
-	};
-	var mutawaaqit = {};
-	var waaqatishtaghal = function (payload, wasaatat) {
-		if (Object.keys(mutawaaqit).length === 0) return;
-		payload = payload || {};
-		payload = Object.assign(payload, {
-			e$ : 616 , // insha 3adad
-		});
-		if (wasaatat) payload = Object.assign(payload, wasaatat);
-		payload.waaqat = payload.waaqat || {};
-		for (var i in mutawaaqit) {
-			var m = mutawaaqit[i] ,
-				ism = m[0] ,
-				haajah = m[1] ,
-				qadr = m[2] ;
-			payload.waaqat[ism] = payload.waaqat[ism] || {};
-			payload.waaqat[ism][haajah] = qadr;
-		}
-		xataalog(payload);
-		$.fetch( xitaab, 'json='+enc( JSON.stringify(payload) ), 'waaqat', progressfn, 30*1000 )
-		.then(function (res) {
-			hasdisconnected(res);
-			var jawaab = {};
-			try {
-				jawaab = JSON.parse( (res||{}).body );
-			} catch (e) {
-				jawaab.waaqat = 1;
-				jawaab.xataa = 1;
-			}
-			if (hasinshaexpired(jawaab)) return;
-			handlejawaab(jawaab);
-		});
-		mutawaaqit = {};
-	};
-	var rafa3 = function (ism, haajah, qadr, marfoo3, wasaatat) {
-		var payload = {};
-		payload = Object.assign(payload, {
-			e$ : 616 , // insha 3adad
-		});
-		if (wasaatat) payload = Object.assign(payload, wasaatat);
-		payload.rafa3 = {};
-		payload.rafa3[ism] = {};
-		payload.rafa3[ism][haajah] = qadr;
-		var fd = new FormData();
-		fd.append('json', JSON.stringify(payload) );
-		fd.append('rafa3', marfoo3);
-		fetch(xitaab, { method: 'post', body: fd }).then(function (res) {
-			hasdisconnected(res);
-			res.json().then(function (jawaab) {
-				if (hasinshaexpired(jawaab)) return;
-				handlejawaab(jawaab);
-			});
-		});
-	};
-	shabakah = {
-		xitaab: xitaab,
-		mundarij: {
-			axav: {},
-			waaqat: {},
-			wasaatat: {},
-			rafa3: {},
-		},
-		rafa3: function (ism, haajah, qadr, marfoo3) {
-			if (!ism) return;
-			if (!marfoo3) return;
-			haajah = haajah || 'xarq' ; // default
-			qadr = qadr || 0 ;
-			wasaatatishtaghal(function (ashyaa) {
-				rafa3(ism, haajah, qadr, marfoo3, ashyaa);
-			}, 'rafa3');
-		},
-		nashar: function () {
-			if (cachedkey) {
-				nasharbadaa();
-			} else {
-				nasharanhaa();
-			}
-		},
-		waaqat: function (ism, haajah, qadr) {
-			if (!ism) return;
-			haajah = haajah || 'xarq' ; // default
-			qadr = qadr || 0 ;
-			mutawaaqit[ ism+'.'+haajah ] = [ism, haajah, qadr];
-			$.taxeer('shabakahwaaqat', function () {
-				wasaatatishtaghal(function (ashyaa) {
-					waaqatishtaghal({}, ashyaa);
-				}, 'waaqat');
-			}, 100);
-		},
-		axav: function (ism, haajah, qadr) { // { ism, haajah, qadr }
-			if (!ism) return;
-			if (arguments.length === 2) qadr = haajah, haajah = 0;
-			haajah = haajah || 'xarq' ; // default
-			qadr = qadr || 0 ;
-			mu3allaq[ ism+'.'+haajah ] = [ism, haajah, qadr];
-			$.taxeer('shabakahajraa', function () {
-				wasaatatishtaghal(function (ashyaa) {
-					ajraa({}, ashyaa);
-				}, 'axav');
-			}, 100);
-		},
-		jawaab: {
-			axav: function (ism, haajah, cb) {
-				if (typeof haajah == 'function') cb = haajah, haajah = 0;
-				haajah = haajah || 'xarq';
-				shabakah.mundarij.axav[ ism ] = shabakah.mundarij.axav[ ism ] || {};
-				shabakah.mundarij.axav[ ism ][ haajah ] = cb;
-			},
-			waaqat: function (ism, haajah, cb) {
-				if (typeof haajah == 'function') cb = haajah, haajah = 0;
-				haajah = haajah || 'xarq';
-				shabakah.mundarij.waaqat[ ism ] = shabakah.mundarij.waaqat[ ism ] || {};
-				shabakah.mundarij.waaqat[ ism ][ haajah ] = cb;
-			},
-			tawassat: function (ism, haajah, cb) {
-				if (typeof haajah == 'function') cb = haajah, haajah = 0;
-				haajah = haajah || 'xarq';
-				shabakah.mundarij.wasaatat[ ism ] = shabakah.mundarij.wasaatat[ ism ] || {};
-				shabakah.mundarij.wasaatat[ ism ][ haajah ] = cb;
-			},
-			rafa3: function (ism, haajah, cb) {
-				if (typeof haajah == 'function') cb = haajah, haajah = 0;
-				haajah = haajah || 'xarq';
-				shabakah.mundarij.rafa3[ ism ] = shabakah.mundarij.rafa3[ ism ] || {};
-				shabakah.mundarij.rafa3[ ism ][ haajah ] = cb;
-			},
-		},
-		tawassat: function (ism, haajah, cb) { // intercept
-			if (typeof haajah == 'function') cb = haajah, haajah = 0;
-			haajah = haajah || 'xarq' ; // default
-			wasaatat[ ism+'.'+haajah ] = [ism, haajah, cb];
-		},
-	};
-	/* TODO hook visibility to nashar
-	*
-	* hook sessionchange, start/stop nashar
-	*
-	* hook ready, if signedin, start nashar
-	*
-	* on hook [axav|nashar], run hook jawaab { [axav|nashar]: bool, xataa: bool }
-	*
-	* have shabakah.xaadim
-	* */
-	Hooks.set('sessionchange', function (key) {
-		cachedkey = key || 0;
-		if (cachedkey) {
-			shabakah.nashar();
-			shabakah.waaqat();
-		}
-	});
-	Hooks.set('ready', function () {
-		shabakahkeys = templates.keys(shabakahui);
-		shabakah.tawassat('shabakah', 'waqt', function (intahaa, qanaat) {
-			intahaa( preferences.get('@') );
-		});
-		shabakah.jawaab.tawassat('shabakah', 'waqt', function (jawaab) {
-			if (jawaab && cachedkey) preferences.set('@', jawaab);
-		});
-		offlinewaqt = preferences.get('@0', 1) || false;
-		listener('online', function (e) {
-			setnetwork(1);
-		});
-		listener('offline', function (e) {
-			setnetwork();
-		});
-		if (sessions) {
-			cachedkey = sessions.signedin() || 0;
-			if (cachedkey) {
-				shabakah.nashar();
-				shabakah.waaqat();
-			}
-		}
-	});
-})();
 /* TODO
 * build undo redo system, find one if there's a tiny one out there already
 *
@@ -6636,7 +6210,7 @@ var editorlist, editor, currently_open_file;
 				};
 				k.time_text.on_focus_next = editor.next;
 				k.time_text.onclick = function () {
-					if (o.time == 0) o.time = 1, setdata(k.time_text, 'i18n', 'day');
+						if (o.time == 0) o.time = 1, setdata(k.time_text, 'i18n', 'day');
 					else if (o.time == 1) o.time = 2, setdata(k.time_text, 'i18n', 'night');
 					else if (o.time == 2) o.time = 3, setdata(k.time_text, 'i18n', 'morning');
 					else if (o.time == 3) o.time = 4, setdata(k.time_text, 'i18n', 'evening');
@@ -6687,7 +6261,7 @@ var editorlist, editor, currently_open_file;
 		softkeys.add({ n: 'Next Format',
 			k: '9',
 			alt: 1,
-			i: 'iconrefresh',
+			i: 'iconarrowforward',
 			c: function () {
 				editor.replace_with();
 			},
@@ -6757,7 +6331,7 @@ var screenplaylist, main;
 	'use strict';
 	var fs = require('fs'); // TODO ifify
 	var rootpath = process.env.HOME + '/Screenplays';
-	var mfateeh;
+	var mfateeh, extension = '.screenplay';
 	main = {
 		read_file: async function ( fileHandle ) {
 			var content = '', file, json = [];
@@ -6826,7 +6400,7 @@ var screenplaylist, main;
 						name = helpers.alias(name || '', 96, 1, 1);
 						Files.set.folder(rootpath);
 						if (name.length) {
-							name += '.screenplay';
+							name += extension;
 							var path = rootpath + '/' + name;
 							var oldfile = false;
 							try {
@@ -6837,7 +6411,8 @@ var screenplaylist, main;
 							} else {
 								Files.set.file(path, '');
 								var clone = screenplaylist.set({
-									title: name,
+									title: name.substr(0, name.length-extension.length),
+									extension: extension,
 									before: screenplaylist.get( 0 ),
 								});
 								screenplaylist.select( 0 );
@@ -6879,6 +6454,8 @@ var screenplaylist, main;
 	};
 	Hooks.set('ready', function (args) {
 		document.title = 'Screenplay';
+		mfateeh = view.mfateeh('main');
+		innertext(mfateeh.path, rootpath);
 		if (pager) {
 			pager.safaa();
 			pager.jama3('main', 'iconmenu', xlate('all'));
@@ -6888,8 +6465,8 @@ var screenplaylist, main;
 		webapp.bixraaj(1);
 		webapp.statusbarpadding();
 		webapp.header();
-		mfateeh = view.mfateeh('main');
-		screenplaylist = list( mfateeh.list ).idprefix('screenplaylist');
+		screenplaylist = list( mfateeh.list ).idprefix('screenplaylist')
+							.listitem( 'screenplay' );
 		screenplaylist.onpress = function (o, k) {
 			if (k == '0') {
 				if ( confirm( translate( 'delete' ) ) ) {
@@ -6897,18 +6474,19 @@ var screenplaylist, main;
 				}
 			}
 			if (k == K.en) {
-				var content = fs.readFileSync('/home/nano/Screenplays/'+o.title).toString();
+				var content = fs.readFileSync('/home/nano/Screenplays/'+o.title+extension).toString();
 				var json = [];
 				try { json = JSON.parse(content); } catch (e) {}
-				editor.load( '/home/nano/Screenplays/'+o.title, json );
+				editor.load( '/home/nano/Screenplays/'+o.title+extension, json );
 				Hooks.run('view', 'edit');
 			}
 		};
 		var arr = fs.readdirSync('/home/nano/Screenplays');
 		arr.reverse().forEach(function (o, i) {
-			if (o.endsWith('.screenplay')) {
+			if (o.endsWith(extension)) {
 				screenplaylist.set({
-					title: o,
+					title: o.substr(0, o.length-extension.length),
+					extension: extension
 				});
 			}
 		});
@@ -6921,24 +6499,39 @@ var screenplaylist, main;
 		pager.intaxab('main', 1);
 		screenplaylist.rakkaz(1, 1);
 		softkeys.list.basic(screenplaylist);
-		softkeys.set('3', function () {
-			main.open();
-		}, '3', 'iconfolderopen', 0);
-		softkeys.set('0', function () {
-			screenplaylist.press('0');
-		}, '0', 'icondeleteforever', 0);
-		softkeys.set(K.sl, function () {
-			main.create();
-		}, 0, 'iconadd', 0);
+		softkeys.add({ n: 'Open',
+			k: 'o',
+			ctrl: 1,
+			i: 'iconfolderopen',
+			c: function () {
+				main.open();
+			}
+		});
+		softkeys.add({ n: 'Delete',
+			k: 'delete',
+			i: 'icondeleteforever',
+			c: function () {
+				screenplaylist.press('0');
+			}
+		});
+		softkeys.add({ n: 'New',
+			k: K.sl,
+			i: 'iconadd',
+			c: function () {
+				main.create();
+			}
+		});
 		screenplaylist.select();
 	} });
 	Hooks.set('dropped', async function (e) {
 		for (const item of e.items) {
 			if (item.kind == 'file') {
 				const entry = await item.getAsFileSystemHandle();
-				if (entry.kind == 'directory') {
-				} else {
-					main.read_file(entry);
+				if (entry) {
+					if (entry.kind == 'directory') {
+					} else {
+						main.read_file(entry);
+					}
 				}
 			}
 		}
